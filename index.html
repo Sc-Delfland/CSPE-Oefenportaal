@@ -89,7 +89,7 @@ footer{margin-top:36px;color:var(--muted);font-size:.85rem;text-align:center}
     <div class="apps" id="appList"></div>
   </section>
 
-  <footer>Oefenportaal CSPE Zorg &amp; Welzijn · Apps openen in een nieuw venster</footer>
+  <footer>Oefenportaal CSPE Zorg &amp; Welzijn</footer>
 </div>
 
 <script>
@@ -97,10 +97,10 @@ footer{margin-top:36px;color:var(--muted);font-size:.85rem;text-align:center}
    Nieuwe app toevoegen? Zet een regel in de 'apps'-lijst van het juiste vak.
 
    Links:
-   - Nu verwijzen de apps naar de gedeelde Claude-artifacts (https://claude.ai/artifact/...).
-     Die werken alleen als de app in Claude op "Iedereen met de link" staat.
-   - Zet je een app later zelf op GitHub, vervang de url dan door het pad naar de map,
-     bijvoorbeeld url:'mens-en-zorg/' (dan opent hij mens-en-zorg/index.html in deze repository). */
+   - Een app op GitHub: url = mapnaam + '/'. In elke map moet een index.html staan.
+     Spatie wordt %20 en & wordt %26, dus map "Oefenapp M&A" = 'Oefenapp%20M%26A/'.
+   - Een app op claude.ai (https://...): opent in een nieuw venster en werkt alleen
+     als de app in Claude op "Iedereen met de link" staat. */
 const ICONS = {
   zorg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/><path d="M12 9v5M9.5 11.5h5"/></svg>',
   omg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
@@ -123,21 +123,21 @@ const VAKKEN = [
     apps:[
       { titel:'Oefenapp Mens & Omgeving', icon:'exam',
         tekst:'Drie oefenexamens: Facet-vragen, Word/PowerPoint-opdracht, gesprek en wassen, strijken of schoonmaken.',
-        url:'https://claude.ai/artifact/5UY31kkEmw2NrkioPvk2uV' }
+        url:'Oefenapp%20M%26O/' }
     ]},
   { id:'mens-en-gezondheid', naam:'Mens & Gezondheid', kleur:'var(--gez)', icon:'gez',
     omschrijving:'Voeding, hygiëne, EHBO en een gezonde leefstijl.',
     apps:[
       { titel:'Oefenapp Mens & Gezondheid', icon:'exam',
         tekst:'Oefen de CSPE-opdrachten van Mens & Gezondheid.',
-        url:'https://claude.ai/artifact/W5zfnJ7rerhE9XHmFAaMXW' }
+        url:'Oefenapp%20M%26G/' }
     ]},
   { id:'mens-en-activiteit', naam:'Mens & Activiteit', kleur:'var(--act)', icon:'act',
     omschrijving:'Activiteiten plannen, organiseren, begeleiden en evalueren.',
     apps:[
       { titel:'Oefenapp Mens & Activiteit', icon:'act',
         tekst:'Oefen de CSPE-opdrachten van Mens & Activiteit, zoals in het opdrachtenboekje.',
-        url:'https://claude.ai/artifact/K5CxgtV9cHCZYe96AB5HwT' }
+        url:'Oefenapp%20M%26A/' }
     ]}
 ];
 
@@ -168,7 +168,7 @@ function render(){
   $('vakHead').innerHTML = `<div class="eyebrow">Profielvak</div><h2>${esc(v.naam)}</h2><p class="intro" style="margin-top:.3rem">${esc(v.omschrijving)}</p>`;
   $('appList').innerHTML = v.apps.length
     ? v.apps.map(a => `
-      <a class="app" href="${a.url}" target="_blank" rel="noopener">
+      <a class="app" href="${a.url}"${/^https?:/.test(a.url) ? ' target="_blank" rel="noopener"' : ''}>
         <span class="badge">${ICONS[a.icon]}</span>
         <span class="txt"><h3>${esc(a.titel)}</h3><p>${esc(a.tekst)}</p></span>
         <span class="go">Start ↗</span>
