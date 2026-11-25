@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="nl"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oefenapp Mens &amp; Activiteit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: opdrachtenboekje — smalle inhoudsrail links, één 'pagina' rechts; punten in de kantlijn zoals in het cspe-boekje */
+:root{
+  --paper:#f5f0e6; --sheet:#ffffff; --ink:#13213a; --muted:#56637c; --line:#d6dde9;
+  --blue:#9a5600; --blue-soft:#fbecd3; --blue-ink:#ffffff;
+  --coral:#d9482b; --coral-soft:#fde8e3;
+  --ok:#17804f; --ok-soft:#dff3e8; --bad:#c2342a; --bad-soft:#fbe3e1; --warn:#9a6a10; --warn-soft:#fbf0d9;
+  --bubble-c:#f1f4f9; --stage:#efe3cc; --stage2:#e2d0ad;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0e1522; --sheet:#162034; --ink:#e5ebf6; --muted:#9ba8c2; --line:#2a3752;
+  --blue:#f0b440; --blue-soft:#3a2a10; --blue-ink:#0e1522;
+  --coral:#ff7b5e; --coral-soft:#3a1d17;
+  --ok:#4cc58c; --ok-soft:#133426; --bad:#ff6d62; --bad-soft:#3b1a1a; --warn:#e6b450; --warn-soft:#352a12;
+  --bubble-c:#1e2a42; --stage:#1b2740; --stage2:#24345a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0e1522; --sheet:#162034; --ink:#e5ebf6; --muted:#9ba8c2; --line:#2a3752;
+  --blue:#f0b440; --blue-soft:#3a2a10; --blue-ink:#0e1522;
+  --coral:#ff7b5e; --coral-soft:#3a1d17;
+  --ok:#4cc58c; --ok-soft:#133426; --bad:#ff6d62; --bad-soft:#3b1a1a; --warn:#e6b450; --warn-soft:#352a12;
+  --bubble-c:#1e2a42; --stage:#1b2740; --stage2:#24345a; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.4rem;font-weight:800}
+h3{font-size:1.05rem;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--sheet);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+textarea{min-height:84px;resize:vertical}
+.wrap{max-width:1120px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:16px 12px;border-bottom:2px solid var(--ink);margin-bottom:20px}
+.brand{display:flex;flex-direction:column;gap:2px;min-width:0}
+.eyebrow{font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.brand b{font-family:var(--f-display);font-size:1.25rem;font-weight:800}
+.topctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 14px;font-weight:700;font-size:.9rem}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.who{font-size:.9rem;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--ink);background:var(--sheet);border-radius:10px;padding:10px 16px;font-weight:700;min-height:44px}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--blue-ink)}
+.btn.ghost{border-color:var(--line)}
+.btn.coral{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{min-height:36px;padding:6px 12px;font-size:.9rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+
+/* home */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:start;margin-bottom:28px}
+.hero p.lead{font-size:1.08rem;margin-top:10px;max-width:60ch}
+.card{background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;padding:18px}
+.form{display:grid;gap:12px}
+.form label{font-weight:700;font-size:.92rem;display:grid;gap:6px}
+.covers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.cover{background:var(--sheet);border:1.5px solid var(--ink);border-radius:6px;padding:0;text-align:left;display:flex;flex-direction:column;min-height:300px;box-shadow:4px 4px 0 var(--ink);transition:transform .15s}
+.cover:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.cover .band{background:var(--blue);color:var(--blue-ink);padding:12px 16px;font-family:var(--f-display);font-weight:800;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cover .band small{font-family:var(--f-body);font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase}
+.cover .body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.cover .place{font-family:var(--f-display);font-size:1.25rem;font-weight:800}
+.cover .meta{font-size:.85rem;color:var(--muted)}
+.cover .prog{margin-top:auto;display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:700;background:var(--sheet)}
+.chip.done{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.chip.bad{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+.chip.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.chip.blue{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+
+/* case */
+.casegrid{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:start}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;flex-direction:column;gap:4px}
+.rail .back{margin-bottom:10px}
+.tab{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:8px;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:8px;font-weight:700}
+.tab .n{font-family:var(--f-display);font-weight:800;font-size:1.05rem;color:var(--muted)}
+.tab .p{font-size:.78rem;color:var(--muted);font-weight:700}
+.tab[aria-current="true"]{background:var(--ink);color:var(--sheet)}
+.tab[aria-current="true"] .n,.tab[aria-current="true"] .p{color:var(--sheet)}
+.tab .st{width:10px;height:10px;border-radius:50%;background:var(--line);justify-self:end}
+.tab .st.ok{background:var(--ok)}
+.sheet{background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;padding:28px;min-width:0}
+.opd{display:grid;grid-template-columns:56px minmax(0,1fr);gap:0 12px}
+.opd .marg{font-family:var(--f-display);font-weight:800;font-size:1.05rem;padding-top:4px;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.opd .marg .pt{color:var(--coral)}
+.opd .marg .nr{font-size:1.6rem;line-height:1}
+.opd .content{display:flex;flex-direction:column;gap:16px;min-width:0}
+.boekje{border-left:4px solid var(--blue);background:var(--blue-soft);padding:14px 16px;border-radius:0 10px 10px 0;display:flex;flex-direction:column;gap:8px}
+.boekje ul{margin:0;padding-left:20px}
+.rule{font-size:.9rem;font-style:italic;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.fact{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font-family:var(--f-display);font-size:1.4rem}
+details.docent{border:1.5px dashed var(--line);border-radius:10px;padding:12px 14px}
+details.docent summary{font-weight:700;cursor:pointer}
+details.docent .crit{margin-top:10px;display:grid;gap:10px}
+details.docent ul{margin:4px 0 0;padding-left:20px}
+
+/* timer */
+.timer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px}
+.timer .clock{font-family:var(--f-display);font-weight:800;font-size:1.4rem;font-variant-numeric:tabular-nums;min-width:4.2ch}
+
+/* quiz */
+.q{display:flex;flex-direction:column;gap:12px}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:10px 12px;text-align:left;min-height:48px}
+.opt .l{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-weight:700}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.opt[aria-pressed="true"] .l{background:var(--blue);color:var(--blue-ink);border-color:var(--blue)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.dots{display:flex;gap:6px}
+.dots i{width:22px;height:6px;border-radius:3px;background:var(--line)}
+.dots i.on{background:var(--blue)}
+.expl{font-size:.92rem;border-left:3px solid var(--line);padding-left:10px;color:var(--muted)}
+
+/* chat */
+.chatgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+.chatbox{border:1.5px solid var(--line);border-radius:12px;display:flex;flex-direction:column;height:560px;min-width:0;background:var(--sheet)}
+.chathead{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1.5px solid var(--line)}
+.ava{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;background:var(--coral-soft);color:var(--coral);flex:none}
+.log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:82%;padding:9px 13px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.c{background:var(--bubble-c);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.s{background:var(--blue);color:var(--blue-ink);border-bottom-right-radius:4px;align-self:flex-end}
+.msg.a{align-self:center;background:transparent;border:1.5px dashed var(--line);font-style:italic;color:var(--muted);font-size:.9rem;max-width:92%;text-align:center}
+.msg.n.warnnote{color:var(--warn);font-weight:700}
+.msg.n{align-self:center;font-size:.88rem;color:var(--muted);text-align:center;max-width:92%}
+.msg em{font-style:italic;opacity:.85}
+.typing{align-self:flex-start;color:var(--muted);font-size:.88rem;font-style:italic}
+.composer{display:flex;gap:8px;padding:10px;border-top:1.5px solid var(--line)}
+.composer input{flex:1;min-width:0}
+.actions{display:flex;flex-direction:column;gap:12px;min-width:0}
+.agroup{display:flex;flex-direction:column;gap:6px}
+.agroup h4{margin:0;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.abtn{border:1.5px solid var(--line);background:var(--sheet);border-radius:9px;padding:8px 10px;text-align:left;font-size:.92rem;min-height:40px}
+.abtn:hover{border-color:var(--blue)}
+.abtn.used{border-color:var(--ok);background:var(--ok-soft);color:var(--ink)}
+.prep{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.check{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:9px;padding:9px 11px;font-size:.95rem}
+.check input{width:20px;height:20px;flex:none;margin-top:2px}
+.aiswitch{display:flex;align-items:center;gap:8px;font-size:.88rem}
+.aiswitch input{width:18px;height:18px}
+
+/* assessment */
+.assess{display:flex;flex-direction:column;gap:14px}
+.sec{border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+.sec .sh{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;background:var(--paper);font-weight:700}
+.sec .sh .sc{font-family:var(--f-display);font-weight:800;font-variant-numeric:tabular-nums}
+.sec ul{list-style:none;margin:0;padding:6px 14px 12px;display:grid;gap:6px}
+.sec li{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start;font-size:.95rem}
+.mark{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem;margin-top:1px}
+.mark.y{background:var(--ok);color:var(--sheet)}
+.mark.n{background:var(--bad);color:var(--sheet)}
+.tip{display:block;font-size:.86rem;color:var(--muted)}
+.total{display:flex;align-items:baseline;gap:10px;font-family:var(--f-display)}
+.total b{font-size:2.2rem;font-weight:800}
+
+/* order */
+.ordergrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.pool,.seq{border:1.5px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:120px}
+.pool h4,.seq h4{margin:0 0 2px;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.stepc{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;border:1.5px solid var(--line);background:var(--sheet);border-radius:9px;padding:8px 10px;text-align:left;font-size:.93rem;min-height:44px}
+.stepc .no{font-family:var(--f-display);font-weight:800;color:var(--blue)}
+.stepc .mv{display:flex;gap:4px}
+.stepc .mv button{border:1.5px solid var(--line);background:var(--sheet);border-radius:6px;width:32px;height:32px;display:grid;place-items:center;font-weight:800}
+.stepc.right{border-color:var(--ok);background:var(--ok-soft)}
+.stepc.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.mat{border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:.88rem;font-weight:700;min-height:104px}
+.mat svg{width:34px;height:34px}
+.mat[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.mat.right{border-color:var(--ok);background:var(--ok-soft)}
+.mat.wrong{border-color:var(--bad);background:var(--bad-soft)}
+
+/* film */
+.player{border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;background:var(--sheet)}
+.stage{position:relative;aspect-ratio:16/9;max-width:100%;background:linear-gradient(180deg,var(--stage) 0 68%,var(--stage2) 68% 100%);overflow:hidden}
+.stage .fig{position:absolute;bottom:8%;width:22%;transition:transform .4s}
+.stage .fig.s{left:10%}
+.stage .fig.c{right:10%}
+.stage .fig.talk{animation:bob .6s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-3%)}}
+.stage .tag{position:absolute;bottom:2%;font-size:.75rem;font-weight:700;background:var(--sheet);border:1.5px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.stage .tag.s{left:12%}
+.stage .tag.c{right:12%}
+.stage .bubble{position:absolute;top:7%;max-width:44%;background:var(--sheet);border:1.5px solid var(--ink);border-radius:14px;padding:8px 12px;font-size:clamp(.78rem,1.8vw,1rem);font-weight:700;line-height:1.3}
+.stage .bubble.s{left:6%}
+.stage .bubble.c{right:6%}
+.stage .actcard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34%;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:clamp(.7rem,1.5vw,.9rem)}
+.stage .actcard svg{width:clamp(28px,6vw,48px);height:clamp(28px,6vw,48px);color:var(--ink)}
+.stage .flash{position:absolute;inset:0;border:6px solid var(--coral);pointer-events:none;opacity:0;transition:opacity .2s}
+.stage .flash.on{opacity:1}
+.stage .fig svg{width:100%;height:auto;display:block}
+.stage .playcover{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--ink) 45%,transparent);cursor:pointer}
+.stage .playcover span{background:var(--sheet);color:var(--ink);border-radius:999px;padding:12px 22px;font-weight:800;font-family:var(--f-display)}
+.subs{padding:10px 14px;min-height:3.2em;border-top:1.5px solid var(--line);font-size:.95rem}
+.ctrl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1.5px solid var(--line);flex-wrap:wrap}
+.bar{flex:1;min-width:140px;height:10px;background:var(--line);border-radius:5px;position:relative;cursor:pointer}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--blue);border-radius:5px}
+.bar .flag{position:absolute;top:-4px;width:4px;height:18px;background:var(--coral);border-radius:2px}
+.time{font-variant-numeric:tabular-nums;font-size:.88rem;color:var(--muted)}
+.scorepick{display:flex;gap:8px;flex-wrap:wrap}
+.scorepick button{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 14px;font-weight:700}
+.scorepick button[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.errlist{display:grid;gap:6px;list-style:none;padding:0;margin:0}
+.errlist li{display:grid;grid-template-columns:24px 1fr;gap:8px;font-size:.93rem}
+video{width:100%;border-radius:10px;background:#000}
+.kw{width:100%;border-collapse:collapse;font-size:.92rem}
+.kw th,.kw td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.kw td.c{text-align:center;width:64px}
+.kw input{width:18px;height:18px}
+.tablewrap{overflow-x:auto}
+.restab{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.restab th,.restab td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left}
+.restab td.r,.restab th.r{text-align:right}
+.restab tfoot td{font-weight:800;font-family:var(--f-display);font-size:1.1rem;border-bottom:0}
+.note{font-size:.82rem;color:var(--muted);max-width:75ch}
+.inline-confirm{border:1.5px solid var(--warn);background:var(--warn-soft);border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.disp{display:flex;margin-top:6px}
+.disp[aria-pressed="true"]{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.facet{gap:14px}
+.qq{font-weight:700}
+.mcl{display:grid;gap:6px}
+.mco{display:flex;gap:10px;align-items:center;padding:6px 8px;border-radius:8px;cursor:pointer}
+.mco input{width:18px;height:18px}
+.mco.right{background:var(--ok-soft)}.mco.wrong{background:var(--bad-soft)}
+.mx,.qtab{border-collapse:collapse;font-size:.95rem;min-width:100%}
+.mx th,.mx td,.qtab th,.qtab td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:middle}
+.mx th{font-size:.85rem;text-align:center}
+.mx td.c{text-align:center;width:96px;white-space:nowrap}
+.mx td.c input{width:18px;height:18px}
+.mx td.c .ok{color:var(--ok);font-weight:800;margin-left:4px}
+.mx tr.right td:first-child{background:var(--ok-soft)}.mx tr.wrong td:first-child{background:var(--bad-soft)}
+.qtab caption{font-weight:700;text-align:left;padding-bottom:6px}
+.qtab thead th{background:var(--blue-soft)}
+.mt{display:grid;gap:8px}
+.mtr{display:grid;grid-template-columns:140px minmax(0,1fr);gap:6px 12px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.mtr .tip{grid-column:2}
+.mtr.right{background:var(--ok-soft)}.mtr.wrong{background:var(--bad-soft)}
+@media (max-width:560px){.mtr{grid-template-columns:1fr}.mtr .tip{grid-column:1}.mx td.c{width:64px}}
+.guide{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-radius:10px;padding:10px 14px;border:1.5px solid var(--line);background:var(--sheet)}
+.guide svg{width:22px;height:22px;flex:none}
+.guide .gk{font-family:var(--f-display);font-weight:800;white-space:nowrap}
+.guide.say{border-color:var(--blue);background:var(--blue-soft)}
+.guide.say svg,.guide.say .gk{color:var(--blue)}
+.guide.do{border-color:var(--coral);background:var(--coral-soft)}
+.guide.do svg,.guide.do .gk{color:var(--coral)}
+.sayopts{flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.sayopt{text-align:left;border:1.5px solid var(--blue);background:var(--sheet);color:var(--ink);border-radius:10px;padding:8px 12px;font-size:.95rem;min-height:42px}
+.sayopt:hover{background:var(--blue-soft)}
+.guide.exam{border-style:dashed}
+.guide.exam svg{color:var(--muted)}
+.guide.wait{border-style:dashed;color:var(--muted)}
+.guide.wait span:first-child{flex:1;min-width:200px}
+.guide.end{border-color:var(--ok);background:var(--ok-soft)}
+.guide.end .gk{color:var(--ok)}
+#say.hint{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.agrp.hint{border-color:var(--coral);box-shadow:0 0 0 3px var(--coral-soft)}
+.agrp.hint summary span:first-child{color:var(--coral)}
+.agrp{border:1.5px solid var(--line);border-radius:10px;background:var(--sheet)}
+.agrp[open]{border-color:var(--blue)}
+.agrp summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;font-weight:700;cursor:pointer;list-style:none;min-height:44px}
+.agrp summary::-webkit-details-marker{display:none}
+.agrp summary::before{content:'▸';color:var(--muted);margin-right:2px;transition:transform .15s}
+.agrp[open] summary::before{transform:rotate(90deg)}
+.agrp summary span:first-child{flex:1}
+.agrp .cnt{font-size:.8rem;color:var(--muted);font-weight:700}
+.agrp-b{display:flex;flex-direction:column;gap:6px;padding:0 10px 10px}
+.mailbox{display:flex;flex-direction:column;gap:10px}
+.mailbox select{max-width:320px}
+a.btn{text-decoration:none;color:inherit}
+a.btn.primary{color:var(--blue-ink)}
+a.btn.disabled{opacity:.45;pointer-events:none}
+.modepick,.peek{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.feedbackai{border:1.5px solid var(--blue);background:var(--blue-soft);border-radius:10px;padding:12px 14px;white-space:pre-wrap}
+footer{margin-top:32px}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .covers{grid-template-columns:1fr}
+  .casegrid{grid-template-columns:1fr}
+  .rail{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  .rail .back{margin:0}
+  .tab{grid-template-columns:auto auto;white-space:nowrap}
+  .tab .st,.tab .p{display:none}
+  .chatgrid{grid-template-columns:1fr}
+  .chatbox{height:480px}
+  .ordergrid{grid-template-columns:1fr}
+  .mats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .sheet{padding:18px 14px}
+  .opd{grid-template-columns:1fr}
+  .opd .marg{flex-direction:row;align-items:baseline;gap:10px;justify-content:flex-start}
+  .prep{grid-template-columns:1fr}
+  h1{font-size:1.55rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+[hidden]{display:none!important}
+
+/* ===== (overgenomen uit Oefenapp Mens & Omgeving) ===== */
+.sheet.wide{padding:22px}
+.ph{color:#9aa4ad;font-style:italic}
+.boekje table.qtab{background:var(--sheet)}
+.boekje .qtab th{background:var(--blue-soft);font-weight:700;vertical-align:top}
+.opdr,.infofile{border:1.5px solid var(--line);border-radius:10px;background:var(--sheet)}
+.opdr>summary,.infofile>summary{padding:10px 14px;font-weight:700;cursor:pointer}
+.opdr>.boekje{margin:0 12px 12px}
+.infotext{padding:4px 16px 14px;font-size:.93rem;display:grid;gap:8px;max-height:360px;overflow:auto}
+.infotext h4{margin:0;font-family:var(--f-display)}
+.infotext p{margin:0}
+/* werkvenster */
+.docgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px;align-items:start}
+.docctl{display:flex;flex-direction:column;gap:10px;min-width:0}
+.docpv{position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);display:flex;flex-direction:column;gap:8px;min-width:0}
+.fl{display:grid;gap:6px;font-weight:700;font-size:.92rem}
+.fl input,.fl select,.fl textarea{font-weight:400}
+.pickimg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.pickimg.sm{grid-template-columns:repeat(4,minmax(0,1fr))}
+.picktxt{display:grid;gap:6px}
+.pk{border:1.5px solid var(--line);background:var(--sheet);border-radius:9px;padding:7px 9px;text-align:left;font-weight:400;font-size:.9rem;min-height:40px;display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.pickimg .pk{align-items:center;text-align:center}
+.pk .emo{font-size:1.6rem;line-height:1.1}
+.pk[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px var(--blue)}
+.rowsel{border-collapse:collapse;width:100%;font-weight:400}
+.rowsel th,.rowsel td{padding:3px 4px;text-align:left;font-size:.85rem}
+.rowsel select{padding:6px 8px}
+.asg{display:grid;gap:6px}
+.asgr{display:grid;grid-template-columns:minmax(0,1fr) 130px;gap:8px;align-items:center;font-weight:400;font-size:.88rem}
+.asgr select{padding:6px 8px}
+.dord{border:1.5px solid var(--line);border-radius:9px;padding:8px;display:grid;gap:4px;font-weight:400}
+.dordr{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.86rem;padding:3px 6px;border-radius:6px}
+.dordr.ex{background:var(--blue-soft)}
+.dordr .mv{display:flex;gap:4px}
+.dordr .mv button{border:1.5px solid var(--line);background:var(--sheet);border-radius:6px;width:30px;height:30px}
+/* lint (ribbon) */
+.ribbon{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:8px}
+.ribbon select{width:auto;padding:5px 8px;font-size:.88rem}
+.ribbon select:disabled,.ribbon button:disabled{opacity:.35}
+.rsel{display:flex;gap:6px;align-items:center;font-weight:700;font-size:.85rem;flex-basis:100%}
+.rsel select{flex:1}
+.rlab{display:flex;gap:4px;align-items:center;font-size:.8rem;color:var(--muted);font-weight:700}
+.rlab input{width:16px;height:16px}
+.rgrp{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.rgrp button{border:0;border-right:1px solid var(--line);background:var(--sheet);min-width:34px;height:32px;font-size:.9rem}
+.rgrp button:last-child{border-right:0}
+.rgrp button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.rhelp{margin:0}
+/* A4-pagina */
+.pagewrap{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.page.a4{aspect-ratio:210/297;width:100%;background:#fff;color:#111;border:1px solid #c9ced3;box-shadow:0 4px 18px rgba(0,0,0,.12);padding:6%;overflow:hidden;container-type:inline-size;--u:calc(100cqw / 524);color-scheme:light}
+.pin{display:flex;flex-direction:column;gap:calc(6*var(--u));font-family:Carlito,Calibri,sans-serif;font-size:calc(11*var(--u));line-height:1.3}
+.pin p{margin:0}
+.pin [data-g]{cursor:pointer;border-radius:3px;outline-offset:2px}
+.pin [data-g]:hover{outline:1px dashed #8fb3d9}
+#page .selg{outline:2px solid #2f80ed!important;background-color:rgba(47,128,237,.06)}
+.hdr{display:flex;gap:calc(8*var(--u));align-items:flex-end;justify-content:center;min-height:calc(48*var(--u));border-bottom:1px dashed #ddd;padding-bottom:calc(4*var(--u))}
+.dimg{line-height:1}
+.dtab{border-collapse:collapse;width:100%}
+.dtab td{border:1px solid #333;padding:calc(3*var(--u)) calc(5*var(--u));vertical-align:top}
+.dtab.inner td{border-color:#777}
+.pin ol,.pin ul{margin:0;padding-left:1.6em}
+.foot{margin-top:auto;border-top:1px dashed #ddd;padding-top:calc(4*var(--u));font-size:calc(9*var(--u))}
+.pin{min-height:100%}
+.week{font-size:inherit}
+.week td{width:50%}
+.logocell{text-align:right}
+.tbox{border:1px solid #333;padding:calc(4*var(--u));margin-top:calc(4*var(--u))}
+.wimg{font-size:calc(22*var(--u));line-height:1;margin-top:2px}
+.logo{display:inline-grid;place-items:center;text-align:center;background:#17724a;color:#fff;font-family:Archivo,Arial,sans-serif;font-weight:800;border-radius:50%;width:5.5em;height:5.5em;font-size:calc(10*var(--u));line-height:1.1}
+.logo.sm{width:5em;height:5em;font-size:calc(8*var(--u))}
+.logo.xs{width:2.2em;height:2.2em;font-size:.55rem;border-radius:50%}
+.fitwarn{align-self:flex-start}
+/* dia's */
+.slides{display:grid;gap:10px}
+.slides.one{gap:0}
+.slide{position:relative;aspect-ratio:16/9;background:#fff;color:#111;border:1px solid #c9ced3;box-shadow:0 3px 12px rgba(0,0,0,.1);padding:4% 5%;container-type:inline-size;--u:calc(100cqw / 880);font-family:Carlito,Calibri,sans-serif;overflow:hidden;display:flex;flex-direction:column;gap:2%;color-scheme:light}
+.slide>*{font-size:calc(18*var(--u))}
+.slide p{margin:0}
+.slide ol,.slide ul{margin:0;padding-left:1.4em}
+.slide [data-g]{cursor:pointer;border-radius:3px}
+.stitle{line-height:1.1}
+.scols{display:grid;grid-template-columns:1.4fr 1fr;gap:calc(14*var(--u));align-items:center;flex:1}
+.spic{display:grid;place-items:center}
+.spic.big{flex:1}
+.semo{font-size:calc(110*var(--u));line-height:1}
+.slide .logo{font-size:calc(22*var(--u))}
+.sfoot{position:absolute;left:5%;bottom:3%;font-size:calc(12*var(--u));color:#555}
+.snr{position:absolute;right:2%;bottom:3%;font-size:calc(12*var(--u));color:#999}
+.trans{position:absolute;right:2%;top:3%;font-size:calc(11*var(--u));background:#eef;color:#336;border-radius:6px;padding:0 6px}
+.pvdone .slides{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.pvdone .page.a4{max-width:420px}
+/* wassymbolen */
+.etiket{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.care{width:46px;height:46px;color:var(--ink);background:var(--sheet);border:1.5px solid var(--line);border-radius:8px;padding:3px}
+.inl .etiket{display:inline-flex;margin:0 8px 0 0;vertical-align:middle}
+.inl .care{width:34px;height:34px}
+.mtr .etiket{margin:0}
+/* gesprek */
+.vm{display:flex;flex-direction:column;gap:10px}
+.vmtext{background:var(--warn-soft);border-left:4px solid var(--warn);padding:10px 12px;border-radius:0 8px 8px 0;font-style:italic;margin:0}
+.notes{white-space:pre-wrap;font-size:.9rem;max-height:200px;overflow:auto}
+.side{display:flex;flex-direction:column;gap:8px;padding:12px}
+.side h4{margin:0;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.side .qtab{font-size:.78rem}
+.prepside{display:grid;gap:12px}
+.map{width:100%;height:auto;border-radius:8px;border:1px solid var(--line)}
+.notitie{border:2px solid var(--ink);border-radius:8px;overflow:hidden;background:var(--sheet)}
+.nhead{background:var(--ink);color:var(--sheet);font-family:var(--f-display);font-weight:800;padding:8px 12px;letter-spacing:.08em}
+.nrow{display:grid;grid-template-columns:200px minmax(0,1fr);gap:10px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);font-weight:700;font-size:.92rem}
+.nrow.area{align-items:start}
+.nrow input,.nrow textarea{font-weight:400}
+.kwh{margin:12px 0 6px;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.part{display:flex;flex-direction:column;gap:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.part:first-of-type{border-top:0;padding-top:0}
+section.q.card{gap:14px}
+section.q.card .qhead h3{margin:0}
+@media (max-width:1000px){ .docgrid{grid-template-columns:1fr} .docpv{position:static} }
+@media (max-width:560px){ .nrow{grid-template-columns:1fr} .pickimg{grid-template-columns:repeat(2,minmax(0,1fr))} .asgr{grid-template-columns:1fr} }
+
+.map{cursor:zoom-in}
+.map.zoom{position:fixed;left:3vw;top:5vh;width:94vw;max-height:90vh;z-index:50;background:#fff;box-shadow:0 0 0 100vmax rgba(0,0,0,.45);cursor:zoom-out}
+.side .qtab{font-size:.75rem}
+.side .qtab th,.side .qtab td{padding:4px 5px}
+
+
+/* ===== Mens & Activiteit ===== */
+.covers .cover .band{background:var(--blue)}
+.facts.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:900px){.facts.five{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.help{border:1.5px solid var(--line);border-radius:10px;background:var(--sheet)}
+.help>summary{padding:10px 14px;font-weight:700;cursor:pointer}
+.help>div{padding:0 14px 12px;display:grid;gap:6px;font-size:.94rem}
+.help[open]{border-color:var(--blue)}
+.help ul{margin:0;padding-left:20px}
+
+/* verslag */
+.vs td:first-child{width:34px;color:var(--muted);font-weight:700}
+.vs tr.right td{background:var(--ok-soft)}
+.vs tr.wrong td{background:var(--bad-soft)}
+.vs .why{display:block;font-size:.86rem;color:var(--muted);margin-top:3px}
+
+/* kostenoverzicht */
+.kgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.kinfo{display:flex;flex-direction:column;gap:10px;max-height:640px;overflow:auto}
+.kinfo .qtab{font-size:.85rem;width:100%}
+.kinfo .qtab th,.kinfo .qtab td{padding:5px 7px}
+.kinfo h4{margin:6px 0 2px;font-family:var(--f-display)}
+.ktab{width:100%;border-collapse:collapse;font-size:.92rem}
+.ktab caption{text-align:left;font-family:var(--f-display);font-weight:800;padding:4px 0 6px}
+.ktab th{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:4px 5px;border-bottom:1.5px solid var(--ink)}
+.ktab td{border-bottom:1px solid var(--line);padding:5px;vertical-align:middle}
+.ktab tr.tot td{background:var(--paper);font-weight:700}
+.ktab input{padding:6px 8px;border-radius:6px}
+.ktab td.a{width:66px}
+.ktab td.p{width:120px}
+.ktab td.b{min-width:150px}
+.ktab select{padding:5px 6px;margin-top:4px;font-size:.88rem}
+.ktab .prod{display:flex;flex-direction:column;gap:2px}
+.ktab .hq{border:1.5px solid var(--line);background:var(--sheet);border-radius:50%;width:26px;height:26px;font-weight:800;font-size:.82rem;line-height:1;padding:0;margin-left:4px;color:var(--blue)}
+.ktab .hint{font-size:.84rem;color:var(--blue);font-weight:400;background:var(--blue-soft);border-radius:6px;padding:4px 8px;margin-top:3px}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.calcres{display:flex;gap:6px;align-items:center;font-size:.8rem;color:var(--muted);margin-top:3px;min-height:1.2em}
+.calcres button{border:1px solid var(--line);background:var(--sheet);border-radius:6px;font-size:.78rem;padding:1px 7px}
+input.right,select.right{border-color:var(--ok);background:var(--ok-soft)}
+input.wrong,select.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.eur{display:flex;align-items:center;gap:4px}
+.concl{border:1.5px solid var(--ink);border-radius:10px;padding:12px 14px;display:grid;gap:8px}
+.concl label{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.concl input[type=radio]{width:18px;height:18px}
+.concl input.amt{width:130px}
+.vbu td,.vbu th{font-size:.85rem}
+@media (max-width:1000px){.kgrid{grid-template-columns:1fr}.kinfo{position:static;max-height:none}}
+
+/* activiteitenkaarten */
+.kaarten{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.kaart{border:1.5px solid var(--ink);border-radius:8px;background:var(--sheet);box-shadow:3px 3px 0 var(--line);display:flex;flex-direction:column}
+.kaart .kh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;background:var(--blue-soft);border-bottom:1.5px solid var(--ink);border-radius:7px 7px 0 0}
+.kaart .kh b{font-family:var(--f-display);font-size:1.08rem}
+.kaart .kh span{font-size:.78rem;color:var(--muted);font-weight:700}
+.kaart .kb{padding:10px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.kaart .kmeta{font-size:.85rem;font-style:italic;color:var(--muted)}
+.kaart .kq{font-weight:700;font-size:.9rem;margin-top:2px}
+.kaart .ck{display:flex;gap:9px;align-items:flex-start;font-size:.93rem;padding:3px 6px;border-radius:6px;cursor:pointer}
+.kaart .ck input{width:18px;height:18px;flex:none;margin-top:2px}
+.kaart .ck.right{background:var(--ok-soft)}
+.kaart .ck.wrong{background:var(--bad-soft)}
+.kaart .ck.miss{outline:1.5px dashed var(--ok)}
+.kaart .fixed{font-size:.92rem;display:flex;gap:8px}
+.kaart .fixed::before{content:'☑';color:var(--blue)}
+.kaart.ok{border-color:var(--ok)}
+.kaart.nok{border-color:var(--bad)}
+.kaart .kf{font-size:.86rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+.groepen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.groep{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--sheet)}
+.groep b{font-family:var(--f-display)}
+@media (max-width:640px){.groepen{grid-template-columns:1fr}}
+
+/* rooster */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.pers{border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;font-size:.86rem}
+.pers b{font-size:1rem;display:flex;justify-content:space-between;gap:6px}
+.pers ul{margin:0;padding-left:16px;color:var(--muted)}
+.pers[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1.5px var(--blue)}
+.pers .cnt{font-size:.8rem;font-weight:700;border-radius:999px;padding:0 8px;border:1.5px solid var(--line)}
+.pers .cnt.full{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.pers .cnt.over{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+.placebar{position:sticky;top:0;z-index:5;background:var(--sheet);border:1.5px solid var(--blue);border-radius:10px;padding:8px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.92rem}
+.placebar b{color:var(--blue)}
+.rtab{border-collapse:collapse;width:100%;font-size:.88rem;table-layout:fixed}
+.rtab th,.rtab td{border:1px solid var(--line);padding:4px;vertical-align:top}
+.rtab thead th{background:var(--blue-soft);font-size:.82rem;text-align:center}
+.rtab th.slot{width:118px;text-align:left;font-size:.82rem;background:var(--paper)}
+.rtab th.slot small{display:block;font-weight:400;color:var(--muted)}
+.rtab td.cell{cursor:pointer;min-height:54px;height:54px;background:var(--sheet)}
+.rtab td.cell:hover{background:var(--blue-soft)}
+.rtab td.cell:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
+.rtab td.closed{background:repeating-linear-gradient(45deg,var(--paper),var(--paper) 6px,var(--line) 6px,var(--line) 7px);cursor:not-allowed;color:var(--muted);font-size:.75rem;text-align:center;vertical-align:middle}
+.rtab td.bad{box-shadow:inset 0 0 0 2px var(--bad)}
+.rtab .ci{display:block;font-size:.72rem;color:var(--muted);margin-bottom:2px}
+.rtab .nm{display:inline-flex;align-items:center;gap:3px;border:1px solid var(--ink);border-radius:999px;padding:0 7px;margin:1px;font-size:.8rem;background:var(--sheet);color:var(--ink);font-weight:700}
+.rtab .nm:hover{border-color:var(--bad);color:var(--bad)}
+.rtab .nm.right{background:var(--ok-soft);border-color:var(--ok)}
+.rtab .nm.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.rtab.sol td{cursor:default}
+.warnlist{margin:0;padding-left:20px;color:var(--warn);font-size:.9rem}
+.rscroll{overflow-x:auto}
+@media (max-width:700px){.rtab{table-layout:auto;min-width:620px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+/* =========================================================
+   GEDEELDE UITLEG
+   ========================================================= */
+const UITLEG_OS = `<p><b>Objectief</b> = wat iedereen kan zien, horen, tellen of meten. Bijvoorbeeld: een tijd, een aantal, een prijs, wat iemand letterlijk zegt of doet.</p>
+<p><b>Subjectief</b> = een mening, gevoel of inschatting van de schrijver. Let op woorden als: <i>leuk, lekker, veel, weinig, grote belangstelling, erg vrolijk, had gezonder gemogen, heeft zin, vond het niet leuk</i>.</p>
+<p>Ook een <b>reden</b> die de schrijver zelf bedenkt (<i>omdat …, daardoor …</i>) maakt een zin vaak subjectief.</p>`;
+
+const UITLEG_KENM = `<ul>
+<li><b>Grove motoriek</b>: bewegen met je hele lichaam (rennen, springen, dansen, gooien).</li>
+<li><b>Fijne motoriek</b>: kleine bewegingen met handen en vingers (knippen, rijgen, schilderen, plakken).</li>
+<li><b>Oog-hand coördinatie</b>: je handen sturen met wat je ziet (kralen rijgen, knippen langs een lijn, vangen).</li>
+<li><b>Sociale interactie / samenwerken</b>: met elkaar praten, overleggen en samen iets doen.</li>
+<li><b>Creativiteit</b>: zelf iets bedenken of ontwerpen.</li>
+<li><b>Taalontwikkeling</b>: praten, woorden leren, vertellen, voorlezen.</li>
+<li><b>Competitie-element</b>: er is een winnaar of je speelt tegen elkaar.</li>
+</ul>`;
+
+/* hulpje voor de oplossingen van het rooster: 'r1:yoga r2:yoga' → [['r1','yoga'],['r2','yoga']] */
+const sol = (s)=> s.trim().split(/\s+/).map(x=>x.split(':'));
+
+/* =========================================================
+   OEFENEXAMEN A — opbouw cspe 2026
+   Gezondheidsfestival Balans
+   ========================================================= */
+const CASE_A = {
+  id:'A', versie:'versie A', stijl:'opbouw cspe 2026',
+  place:'Gezondheidsfestival Balans', town:'festival',
+  intro:'Gezondheidsfestival Balans is een festival voor jong en oud. Er zijn verschillende workshops waaraan bezoekers kunnen deelnemen, zoals yoga, vegetarisch koken en kinder-EHBO. Er worden adviezen over voeding en leefstijl gegeven. Voor de kinderen worden leuke activiteiten georganiseerd. Daarnaast kunnen bezoekers genieten van gezonde gerechten bij de foodtrucks of in het restaurant.',
+  topics:'verslag · kostenoverzicht · kaarten · rooster vrijwilligers',
+
+  /* ---------- C1: zinnen uit een verslag ---------- */
+  verslag:{
+    text:'Chalid is stagiair bij het gezondheidsfestival. Zijn stagebegeleider heeft gevraagd of hij een verslag wil maken van het festival.',
+    bands:[[10,2],[8,1]],
+    zinnen:[
+      {s:'Op vrijdagmiddag begon het festival om 13.00 uur en het eindigde ’s avonds om 21.00 uur.', a:0, e:'Tijden kun je controleren: dat zijn feiten.'},
+      {s:'Op zaterdag was het gebouw extra lang open omdat er een groot aantal bezoekers werd verwacht.', a:1, e:'‘Een groot aantal’ en de reden ‘omdat … werd verwacht’ zijn een inschatting.'},
+      {s:'Er werkten veel vaste medewerkers en vrijwilligers mee aan het festival.', a:1, e:'‘Veel’ is geen getal: wat de één veel vindt, vindt de ander weinig.'},
+      {s:'Op zaterdag kwamen er 145 bezoekers met de auto en 75 bezoekers met het openbaar vervoer naar het gezondheidsfestival.', a:0, e:'Aantallen zijn geteld: objectief.'},
+      {s:'De bezoekers die de workshop Zumba volgden, kregen een waterfles.', a:0, e:'Dit kun je zien en controleren.'},
+      {s:'Alle bezoekers kregen een papieren tas met een paar folders, een pen en een klein rolletje pepermunt.', a:1, e:'‘Een paar’ en ‘klein’ zijn niet precies: een inschatting.'},
+      {s:'Er was grote belangstelling voor de workshop vegetarisch koken.', a:1, e:'‘Grote belangstelling’ is een mening. Objectief zou zijn: er deden 30 mensen mee.'},
+      {s:'De broodjes die de bezoekers konden kopen hadden wel wat gezonder gemogen.', a:1, e:'Dit is duidelijk een mening van de schrijver.'},
+      {s:'De broodjes met kaas of met kipsalade kostten € 3,50 en de broodjes kroket kostten € 3,75.', a:0, e:'Prijzen zijn feiten.'},
+      {s:'Ik heb mezelf aangemeld om volgend jaar als vrijwilliger mee te werken aan het festival.', a:0, e:'Dit is iets wat Chalid gedaan heeft: een feit.'}
+    ]
+  },
+
+  /* ---------- C2: kostenoverzicht ---------- */
+  kosten:{
+    title:'Kostenoverzicht gezondheidsfestival voor 12 medewerkers',
+    text:'12 medewerkers van Verpleeghuis Zonnewende bezoeken het gezondheidsfestival. De kaarten zijn in de voorverkoop gekocht. Ze gaan met de fiets en volgen drie verschillende workshops. Ze lunchen bij het festival en drinken twee drankjes. Jij gaat berekenen wat de totale kosten zijn.',
+    uitvoering:['Lees de informatie voor de prijsberekening.','Lees de prijslijsten.','Kies waar mogelijk de goedkoopste optie.','Houd rekening met aanbiedingen.','Vul het kostenoverzicht in en bereken de kosten.','Bereken of een bedrag van € 400,00 voldoende is om de kosten te betalen.'],
+    facts:['Er gaan 12 medewerkers naar het festival.','De prijs van de toegangskaarten is per persoon € 5,00 aan de kassa en € 4,00 in de voorverkoop.','7 medewerkers gaan met hun eigen fiets. Dit kost niets.','5 medewerkers huren een elektrische fiets voor de hele dag.','De hele groep volgt drie verschillende workshops.','Als eerste wordt door de hele groep de workshop ‘reanimatie’ gedaan.','Daarna doet de hele groep de goedkoopste workshop.','Uit de workshops die over zijn, kiest de hele groep als laatste een workshop die 30 minuten duurt.','3 medewerkers hebben zelf middageten meegebracht. De rest kiest de eenvoudige lunch.','De eerste ronde drankjes kiezen 6 medewerkers koffie en 6 medewerkers thee.','De tweede ronde drankjes kiezen 8 medewerkers het goedkoopste drankje en 4 medewerkers het duurste drankje.'],
+    info:`<h4>Prijzen fietsen</h4>
+      <table class="qtab"><tbody><tr><td>huurfiets</td><td>€ 17,50 per dag</td></tr><tr><td>huur elektrische fiets</td><td>€ 22,50 per dag</td></tr></tbody></table>
+      <h4>Prijzen workshops</h4>
+      <table class="qtab"><thead><tr><th>workshop</th><th>informatie</th><th>prijs</th></tr></thead><tbody>
+        <tr><td>bloeddruk</td><td>leer de bloeddrukmeter te gebruiken (duur: 30 minuten)</td><td>€ 2,50 per deelnemer</td></tr>
+        <tr><td>communicatie</td><td>leer nieuwe gesprekstechnieken (duur: 30 minuten)</td><td>€ 3,00 per deelnemer<br><b>iedere derde deelnemer is gratis</b></td></tr>
+        <tr><td>leefstijl</td><td>krijg tips voor een gezonde leefstijl (duur: 60 minuten)</td><td>€ 2,30 per deelnemer</td></tr>
+        <tr><td>reanimatie</td><td>leer een hartstilstand herkennen en de AED te gebruiken (duur: 90 minuten)</td><td>€ 7,50 per deelnemer<br><b>10 deelnemers en meer: 25% korting voor de hele groep</b></td></tr>
+      </tbody></table>
+      <h4>Prijzen eten en drinken</h4>
+      <table class="qtab"><tbody>
+        <tr><td>uitgebreide lunch (2 luxe broodjes, rauwkost, fruit)</td><td>€ 12,50</td></tr>
+        <tr><td>pizza belegd naar keuze</td><td>€ 7,50</td></tr>
+        <tr><td>eenvoudige lunch (2 broodjes met kaas, kipfilet of ham, fruit)</td><td>€ 6,75</td></tr>
+        <tr><td>glas thee</td><td>€ 2,25</td></tr><tr><td>kop koffie</td><td>€ 2,50</td></tr>
+        <tr><td>vruchtensap</td><td>€ 3,25</td></tr><tr><td>bronwater (met of zonder koolzuur)</td><td>€ 2,10</td></tr><tr><td>frisdrank</td><td>€ 3,10</td></tr>
+      </tbody></table>`,
+    secs:[
+      {h:'kosten toegang en vervoer', lines:[
+        {id:'kaart', l:'toegangskaarten', ans:48, calc:'12 x 4,00', hint:'De kaarten zijn in de voorverkoop gekocht: € 4,00 per persoon.'},
+        {id:'fiets', l:'fietsen', ans:112.5, calc:'5 x 22,50', hint:'7 medewerkers hebben een eigen fiets (gratis). 5 huren een elektrische fiets.'},
+        {id:'totTV', l:'totale kosten toegang en vervoer', f:v=>v.kaart+v.fiets, hint:'Tel de bedragen hierboven op.'}]},
+      {h:'kosten workshops, eten en drinken', lines:[
+        {id:'ws1', l:'1e workshop reanimatie', ans:67.5, calc:'(12 x 7,50) − 25% = 90,00 − 22,50', hint:'12 × € 7,50 = € 90,00. Het zijn 10 of meer deelnemers: haal er 25% vanaf.'},
+        {id:'ws2', l:'2e workshop', pick:{o:['bloeddruk','communicatie','leefstijl'],a:'communicatie'}, ans:24, calc:'communicatie: 8 x 3,00 (4 gratis)', hint:'Reken voor 12 personen uit: bloeddruk, communicatie en leefstijl. Bij communicatie is iedere derde gratis. Kies de goedkoopste.'},
+        {id:'ws3', l:'3e workshop', pick:{o:['bloeddruk','communicatie','leefstijl'],a:'bloeddruk'}, ans:30, calc:'bloeddruk: 12 x 2,50', hint:'Welke workshops zijn nog over? Kies de workshop die 30 minuten duurt.'},
+        {id:'lunch', l:'lunch', ans:60.75, calc:'9 x 6,75', hint:'3 medewerkers hebben zelf eten mee. Hoeveel nemen de eenvoudige lunch?'},
+        {id:'dr1', l:'drankjes ronde 1', ans:28.5, calc:'(6 x 2,25) + (6 x 2,50)', hint:'6 × thee en 6 × koffie.'},
+        {id:'dr2', l:'drankjes ronde 2', ans:29.8, calc:'(8 x 2,10) + (4 x 3,25)', hint:'Het goedkoopste drankje is bronwater, het duurste is vruchtensap.'},
+        {id:'totWED', l:'totale kosten workshops, eten en drinken', f:v=>v.ws1+v.ws2+v.ws3+v.lunch+v.dr1+v.dr2, hint:'Tel alle zes bedragen op.'}]},
+      {h:'totaal', lines:[
+        {id:'c1', l:'totale kosten toegang en vervoer', f:v=>v.totTV, copy:true},
+        {id:'c2', l:'totale kosten workshops, eten en drinken', f:v=>v.totWED, copy:true},
+        {id:'tot', l:'totale kosten gezondheidsfestival', f:v=>v.c1+v.c2}]}
+    ],
+    concl:{budget:400, q:'Verpleeghuis Zonnewende heeft € 400,00 beschikbaar voor het gezondheidsfestival. Is dit bedrag voldoende om de kosten te betalen?', ja:'Ja. Er blijft over: €', nee:'Nee. Er is een tekort van: €'},
+    score:{mode:'minus', max:5},
+    aspects:[
+      {l:'de kosten van de toegangskaarten en de fietsen juist', ids:['kaart','fiets']},
+      {l:'een juiste optelling van de totale kosten toegang en vervoer', ids:['totTV']},
+      {l:'de kosten van de eerste workshop (reanimatie) juist', ids:['ws1']},
+      {l:'de kosten van de tweede workshop (communicatie) en derde workshop (bloeddruk) juist', ids:['ws2','ws3']},
+      {l:'de lunchkosten juist', ids:['lunch']},
+      {l:'de kosten van de drankjes (ronde 1 en ronde 2) juist', ids:['dr1','dr2']},
+      {l:'een juiste optelling van de totale kosten workshops, eten en drinken', ids:['totWED']},
+      {l:'een juiste optelling van de totale kosten van het gezondheidsfestival', ids:['c1','c2','tot']},
+      {l:'het juiste bedrag bij de juiste conclusie', concl:true}
+    ]
+  },
+
+  /* ---------- C3a: theorievragen ---------- */
+  quizBB:[
+    {t:'mc', q:'Wat is een draaiboek?', o:['een overzicht met alle stappen, taken en tijden van een activiteit','een boek met spelletjes','een lijst met de namen van de bezoekers'], a:0, e:'In een draaiboek staat precies wie wat wanneer doet. Zo verloopt de activiteit goed.'},
+    {t:'matrix', q:'Is de zin objectief of subjectief?', cols:['objectief','subjectief'], rows:[
+      {s:'Er deden 12 kinderen mee aan de workshop.', a:0},
+      {s:'De kinderen vonden de workshop saai.', a:1},
+      {s:'Tim zei: “Ik wil nog een keer.”', a:0}], e:'Een aantal en wat iemand letterlijk zegt, zijn feiten. ‘Vonden het saai’ is een inschatting.'},
+    {t:'mc', ctx:'Een groep kinderen komt bij jouw activiteit.', q:'Wat doe je eerst?', o:['je heet ze welkom en vertelt wat jullie gaan doen','je deelt meteen de materialen uit','je laat ze zelf maar beginnen'], a:0, e:'Eerst ontvang je de deelnemers en stel je ze op hun gemak.'},
+    {t:'mc', q:'Hoe leg je een activiteit het best uit?', o:['stap voor stap, en je doet het voor','heel snel, dan blijven ze opletten','alleen met een briefje op tafel'], a:0, e:'Voordoen en stap voor stap uitleggen werkt het best.'},
+    {t:'match', q:'Wat stimuleert de activiteit vooral?', items:[{l:'tikkertje spelen',a:0},{l:'kralen rijgen',a:1},{l:'samen overleggen over een bouwwerk',a:2}], o:['grove motoriek','fijne motoriek','samenwerken'], e:'Rennen = grove motoriek. Kleine bewegingen met je vingers = fijne motoriek. Overleggen = samenwerken.'},
+    {t:'mc', ctx:'Een kind wil niet meedoen.', q:'Wat zeg je?', o:['“Kom je even kijken? Je mag het eerst samen met mij proberen.”','“Dan doe je maar niks.”','“Je moet meedoen, anders ga je weg.”'], a:0, e:'Motiveer het kind vriendelijk en help het om te beginnen.'},
+    {t:'mc', q:'Wat doe je aan het eind van de activiteit?', o:['samen opruimen en vragen wat ze leuk vonden','meteen weggaan','de spullen laten liggen voor de volgende groep'], a:0, e:'Je rondt af: opruimen en kort evalueren.'},
+    {t:'mc', ctx:'Een toegangskaart kost € 4,00 in de voorverkoop.', q:'Wat betalen 10 personen?', o:['€ 40,00','€ 50,00','€ 14,00'], a:0, e:'10 × € 4,00 = € 40,00.'}
+  ],
+  quizKB:[
+    {t:'mc', q:'Wat hoort in een draaiboek voor een activiteit?', o:['doel, doelgroep, benodigdheden, taakverdeling en tijdsplanning','alleen de namen van de deelnemers','alleen de kosten van de activiteit','de spelregels en de naam van de winnaar'], a:0, e:'Een draaiboek beschrijft de hele activiteit: wat, voor wie, met welke spullen, wie doet wat en hoe laat.'},
+    {t:'matrix', q:'Is de zin objectief of subjectief?', cols:['objectief','subjectief'], rows:[
+      {s:'De workshop duurde 45 minuten.', a:0},
+      {s:'Er was weinig belangstelling voor de workshop.', a:1},
+      {s:'Er kwamen 8 bezoekers naar de workshop.', a:0},
+      {s:'De yogales was te moeilijk voor ouderen.', a:1}], e:'‘Weinig belangstelling’ en ‘te moeilijk’ zijn inschattingen. Tijden en aantallen zijn feiten.'},
+    {t:'mc', q:'Waarom vraag je naar wensen en behoeften voordat je een activiteit kiest?', o:['dan past de activiteit bij de deelnemers en doen ze eerder mee','dan ben je sneller klaar','dan hoef je geen draaiboek te maken','dan wordt de activiteit goedkoper'], a:0, e:'Een activiteit die past bij wat iemand wil en kan, motiveert.'},
+    {t:'mc', ctx:'Een groep kleuters van 4 jaar kan zich maar kort concentreren.', q:'Welke activiteit past het best?', o:['een bewegingsspel van 15 minuten','een quiz van een uur','een bordspel met veel regels','een speurtocht waarbij ze moeten lezen'], a:0, e:'Jonge kinderen: kort, veel bewegen, weinig regels en niet lezen.'},
+    {t:'match', q:'Welk ontwikkelingsgebied stimuleert de activiteit vooral?', items:[{l:'kralen rijgen',a:0},{l:'tikkertje',a:1},{l:'samen een toren bouwen en overleggen',a:2},{l:'een verhaal navertellen',a:3}], o:['fijne motoriek','grove motoriek','sociale ontwikkeling','taalontwikkeling'], e:'Kijk wat de kinderen vooral doen: met vingers, met hun hele lijf, met elkaar of met taal.'},
+    {t:'mc', ctx:'Een kind knipt scheef.', q:'Welke aanwijzing is het best?', o:['“Houd je duim boven in de schaar en draai het papier, niet de schaar.”','“Nee, zo niet!”','“Kijk maar hoe de anderen het doen.”','“Dat is fout, begin opnieuw.”'], a:0, e:'Een goede aanwijzing is positief, kort en vertelt precies wat het kind moet doen.'},
+    {t:'mc', q:'Waarom evalueer je een activiteit met deelnemers en medewerkers?', o:['om te leren wat goed ging en wat beter kan bij een volgende keer','om te bepalen wie gewonnen heeft','om de kosten te berekenen','om de deelnemers een cijfer te geven'], a:0, e:'Evalueren = terugkijken om de volgende activiteit beter te maken.'},
+    {t:'mc', ctx:'Een workshop kost € 3,00 per deelnemer. Iedere derde deelnemer is gratis.', q:'Wat betalen 9 deelnemers?', o:['€ 18,00','€ 27,00','€ 24,00','€ 9,00'], a:0, e:'Van de 9 deelnemers zijn er 3 gratis. 6 × € 3,00 = € 18,00.'}
+  ],
+
+  /* ---------- C3b: activiteiten beoordelen ---------- */
+  kaarten:{
+    text:'Op het gezondheidsfestival worden activiteiten georganiseerd voor kinderen. Alle activiteiten staan op kaarten. Niet alle kaarten zijn ingevuld. Aan jou wordt gevraagd deze kaarten verder in te vullen.',
+    doelgroepInfo:'<p><b>Peuters (2–4 jaar)</b>: spelen vooral naast elkaar, korte aandacht, leren nieuwe woorden.<br><b>Kleuters (4–6 jaar)</b>: veel fantasie, leren knippen, plakken en stempelen, korte spelletjes.<br><b>Schoolkinderen (6–12 jaar)</b>: kunnen lezen, spelen met regels, houden van wedstrijdjes en samenwerken.</p>',
+    ontw:['motorische ontwikkeling','sociale ontwikkeling','cognitieve ontwikkeling (denken)','creatieve ontwikkeling','taalontwikkeling'],
+    deel1:[
+      {t:'Gezonde boodschappenestafette', d:'Twee teams rennen om de beurt naar de ‘winkel’. Ze lezen het briefje en kiezen samen het gezondste product. Het team dat als eerste klaar is, wint.', n:'8-12', tijd:'30 minuten', dg:2, a:[0,1,2], e:'Rennen (motorisch), samen kiezen (sociaal), nadenken over gezond (cognitief). Lezen en een wedstrijd met regels: schoolkinderen.'},
+      {t:'Fruitprentenboek', d:'De begeleider leest een prentenboek over fruit voor. De kinderen wijzen het fruit aan en zeggen hoe het heet.', n:'3-6', tijd:'15 minuten', dg:0, a:[4], e:'Voorlezen en woorden zeggen: taalontwikkeling. Kort en eenvoudig: peuters.'},
+      {t:'Groentestempelen', d:'De kinderen maken met halve paprika’s en aardappelstempels hun eigen kunstwerk op papier.', n:'4-8', tijd:'20 minuten', dg:1, a:[0,3], e:'Stempelen met de handen (motorisch) en zelf iets ontwerpen (creatief). Kleuters stempelen graag.'},
+      {t:'Kinderyoga', d:'De kinderen doen houdingen na en letten op hun ademhaling. Daarna vertellen ze aan elkaar hoe ze zich voelen.', n:'6-10', tijd:'30 minuten', dg:2, a:[0,1], e:'Houdingen (motorisch) en elkaar vertellen hoe je je voelt (sociaal-emotioneel). Stil volhouden en luisteren: schoolkinderen.'}
+    ],
+    doelgroepen:['peuters (2–4 jaar)','kleuters (4–6 jaar)','schoolkinderen (6–12 jaar)'],
+    groepen:[
+      {n:'Groep 1', d:'6 kleuters van 4 en 5 jaar. Ze kunnen zich maximaal 20 minuten concentreren en bewegen graag. Ze kunnen nog niet lezen.'},
+      {n:'Groep 2', d:'8 kinderen van 9 tot 11 jaar. Eén kind zit in een rolstoel. Ze doen graag mee aan wedstrijdjes.'}],
+    deel2:[
+      {t:'Ballonnen hooghouden', d:'De kinderen houden samen een paar ballonnen in de lucht. Dit kan staand of zittend. Als een ballon de grond raakt, begint de groep opnieuw te tellen.', n:'2-8', tijd:'15 minuten', kenm:['stimuleert vooral de grove motoriek','stimuleert de oog-hand coördinatie','stimuleert het samenwerken'], a:[true,true], e:'Kort genoeg voor groep 1 en ook zittend te doen: geschikt voor beide groepen.'},
+      {t:'Speurtocht naar de uitkijktoren', d:'De kinderen lezen opdrachtkaarten en volgen een route over het grasveld en een trap naar de uitkijktoren.', n:'4-10', tijd:'45 minuten', kenm:['stimuleert vooral de grove motoriek','stimuleert het samenwerken','heeft een competitie-element'], a:[false,false], e:'Groep 1 kan niet lezen en 45 minuten is te lang. Met een rolstoel kun je niet over het gras en de trap op. Ongeschikt voor beide groepen.'}
+    ]
+  },
+
+  /* ---------- C3c: rooster ---------- */
+  rooster:{
+    title:'Rooster vrijwilligers',
+    text:'Op Gezondheidsfestival Balans helpen vrijwilligers bij de workshops yoga, vegetarisch koken, Zumba en kinder-EHBO. De vrijwilligers worden ingedeeld volgens een rooster. Jij loopt stage op het festival en er is aan jou gevraagd om het rooster voor de vrijwilligers te maken.',
+    uitvoering:['Houd bij het indelen rekening met de beschikbaarheid en voorkeur(en) van de vrijwilliger.','Bij elke workshop helpen 1 of 2 vrijwilligers.','Houd rekening met de lunchpauze. De vrijwilliger is tijdens de pauze niet beschikbaar om te helpen bij een workshop.'],
+    tip:'Begin met het inplannen van Sifan.',
+    unit:'rondes', min:1, max:2,
+    slots:[{id:'r1',l:'ronde 1',sub:'10.00 – 11.00 uur'},{id:'r2',l:'ronde 2',sub:'11.00 – 12.00 uur'},{id:'r3',l:'ronde 3',sub:'12.00 – 13.00 uur'},{id:'r4',l:'ronde 4',sub:'13.00 – 14.00 uur'},{id:'r5',l:'ronde 5',sub:'14.00 – 15.00 uur'},{id:'r6',l:'ronde 6',sub:'15.00 – 16.00 uur'}],
+    acts:[{id:'yoga',l:'yoga'},{id:'koken',l:'vegetarisch koken'},{id:'zumba',l:'Zumba'},{id:'ehbo',l:'kinder-EHBO'}],
+    people:[
+      {n:'Sifan', k:5, w:['wil alleen ingedeeld worden bij yoga']},
+      {n:'Femke', k:5, w:['assisteert in ronde 1 bij yoga','helpt de rest van de dag bij kinder-EHBO']},
+      {n:'Denzel', k:5, w:['wil graag bij Zumba worden ingedeeld','wil de laatste ronde bij Harry worden ingedeeld']},
+      {n:'Harry', k:5, w:['helpt bij het vegetarisch koken','helpt in ronde 1 bij Zumba']},
+      {n:'Niels', k:4, w:['helpt in ronde 1 bij kinder-EHBO','helpt vanaf ronde 2 Denzel bij Zumba','is tot 15.00 uur beschikbaar']},
+      {n:'Abdi', k:4, w:['komt om 11.00 uur','helpt bij de kinder-EHBO']},
+      {n:'Kyra', k:3, w:['helpt in ronde 1 en 2 bij vegetarisch koken','helpt in ronde 5 bij yoga']},
+      {n:'Jelle', k:2, w:['helpt in ronde 3 en ronde 6 bij Zumba']},
+      {n:'Pien', k:4, w:['helpt Kyra bij vegetarisch koken','helpt in ronde 3 en ronde 6 bij yoga']}
+    ],
+    extra:`<table class="qtab"><caption>rooster lunchpauze</caption><tbody>
+      <tr><td>11.30 – 12.00 uur</td><td>Femke, Harry, Jelle</td></tr>
+      <tr><td>12.00 – 12.30 uur</td><td>Sifan, Denzel</td></tr>
+      <tr><td>12.30 – 13.00 uur</td><td>Niels</td></tr>
+      <tr><td>13.00 – 13.30 uur</td><td>Abdi, Kyra, Pien</td></tr></tbody></table>`,
+    sol:{
+      Sifan:sol('r1:yoga r2:yoga r4:yoga r5:yoga r6:yoga'),
+      Femke:sol('r1:yoga r3:ehbo r4:ehbo r5:ehbo r6:ehbo'),
+      Denzel:sol('r1:zumba r2:zumba r4:zumba r5:zumba r6:koken'),
+      Harry:sol('r1:zumba r3:koken r4:koken r5:koken r6:koken'),
+      Niels:sol('r1:ehbo r2:zumba r4:zumba r5:zumba'),
+      Abdi:sol('r2:ehbo r3:ehbo r5:ehbo r6:ehbo'),
+      Kyra:sol('r1:koken r2:koken r5:yoga'),
+      Jelle:sol('r3:zumba r6:zumba'),
+      Pien:sol('r1:koken r2:koken r3:yoga r6:yoga')
+    },
+    secs:[
+      {code:'a', title:'juiste aantal rondes ingedeeld', max:2, mode:'minus', items:[
+        {l:'Sifan, Femke, Denzel en Harry zijn allemaal precies 5 rondes ingedeeld', ok:G=>['Sifan','Femke','Denzel','Harry'].every(n=>cnt(G,n)===5)},
+        {l:'Niels, Pien en Abdi zijn allemaal precies 4 rondes ingedeeld', ok:G=>['Niels','Pien','Abdi'].every(n=>cnt(G,n)===4)},
+        {l:'Kyra is precies 3 rondes en Jelle precies 2 rondes ingedeeld', ok:G=>cnt(G,'Kyra')===3&&cnt(G,'Jelle')===2}]},
+      {code:'b', title:'bij de juiste workshops ingedeeld', max:4, mode:'bands', bands:[[9,4],[7,3],[5,2],[4,1]], items:[
+        {l:'Sifan is alleen ingedeeld bij yoga en is ronde 3 niet ingedeeld', ok:G=>cnt(G,'Sifan')>0&&onlyActs(G,'Sifan',['yoga'])&&free(G,'Sifan','r3'), tip:'Sifan heeft van 12.00 tot 12.30 uur pauze: dat valt in ronde 3.'},
+        {l:'Femke is ronde 1 bij yoga, ronde 3 t/m 6 bij kinder-EHBO en ronde 2 niet ingedeeld', ok:G=>has(G,'Femke','r1','yoga')&&['r3','r4','r5','r6'].every(s=>has(G,'Femke',s,'ehbo'))&&free(G,'Femke','r2'), tip:'Femke heeft pauze van 11.30 tot 12.00 uur (ronde 2).'},
+        {l:'Denzel en Harry zijn ronde 1 samen bij Zumba en ronde 6 samen bij vegetarisch koken; Denzel is ronde 3 niet ingedeeld', ok:G=>['Denzel','Harry'].every(n=>has(G,n,'r1','zumba')&&has(G,n,'r6','koken'))&&free(G,'Denzel','r3'), tip:'Denzel wil de laatste ronde bij Harry, en Harry helpt bij het koken.'},
+        {l:'Niels is ronde 1 bij kinder-EHBO, ronde 2, 4 en 5 samen met Denzel bij Zumba en ronde 3 niet ingedeeld', ok:G=>has(G,'Niels','r1','ehbo')&&['r2','r4','r5'].every(s=>has(G,'Niels',s,'zumba')&&has(G,'Denzel',s,'zumba'))&&free(G,'Niels','r3'), tip:'Niels is tot 15.00 uur beschikbaar en heeft pauze in ronde 3.'},
+        {l:'Harry is ronde 3, 4 en 5 bij vegetarisch koken en ronde 2 niet ingedeeld', ok:G=>['r3','r4','r5'].every(s=>has(G,'Harry',s,'koken'))&&free(G,'Harry','r2')},
+        {l:'Abdi is ronde 2, 3, 5 en 6 bij kinder-EHBO en ronde 4 niet ingedeeld', ok:G=>['r2','r3','r5','r6'].every(s=>has(G,'Abdi',s,'ehbo'))&&free(G,'Abdi','r4'), tip:'Abdi komt om 11.00 uur en heeft pauze van 13.00 tot 13.30 uur.'},
+        {l:'Kyra en Pien zijn ronde 1 en 2 samen bij vegetarisch koken', ok:G=>['Kyra','Pien'].every(n=>has(G,n,'r1','koken')&&has(G,n,'r2','koken'))},
+        {l:'Kyra is ronde 5 bij yoga, Pien ronde 3 en 6 bij yoga; Kyra en Pien zijn ronde 4 niet ingedeeld', ok:G=>has(G,'Kyra','r5','yoga')&&has(G,'Pien','r3','yoga')&&has(G,'Pien','r6','yoga')&&free(G,'Kyra','r4')&&free(G,'Pien','r4')},
+        {l:'Jelle is ronde 3 en 6 bij Zumba en ronde 2 niet ingedeeld', ok:G=>has(G,'Jelle','r3','zumba')&&has(G,'Jelle','r6','zumba')&&free(G,'Jelle','r2')}]}
+    ]
+  }
+};
+
+/* =========================================================
+   OEFENEXAMEN B — opbouw cspe 2025
+   Zorgboerderij Zevenblad
+   ========================================================= */
+const B_DAYS=[['ma','maandag'],['di','dinsdag'],['wo','woensdag'],['do','donderdag'],['vr','vrijdag']];
+const DAGDELEN=B_DAYS.flatMap(([k,l])=>[{id:k+'-o',l:l,sub:'ochtend'},{id:k+'-m',l:l,sub:'middag'}]);
+const B_BEG={moestuin:{ma:'Edris',di:'Edris',wo:'Edris',do:'Edris',vr:'Pieter'}, winkel:{di:'Maryam',wo:'Anneke',do:'Maryam','vr-o':'Melvin'}, kaarsen:{ma:'Anneke',di:'Anneke',do:'Anneke',vr:'Anneke'}};
+const CASE_B = {
+  id:'B', versie:'versie B', stijl:'opbouw cspe 2025',
+  place:'Zorgboerderij Zevenblad', town:'zorgboerderij',
+  intro:'Zorgboerderij Zevenblad biedt dagbesteding en logeeropvang aan mensen met een zorgvraag. Er zijn verschillende groepen cliënten: een kinder- en jeugdgroep, een volwassenengroep en een ouderengroep. Op de zorgboerderij zijn diverse werkzaamheden en activiteiten, zoals dieren verzorgen en knuffelen, knutselen en spelletjes doen, werken in de moestuin, bakken en bereiden van gerechten, en helpen in de boerderijwinkel en de kaarsenmakerij.',
+  topics:'verslag · kostenoverzicht · kaarten · weekrooster cliënten',
+
+  verslag:{
+    text:'Marieke is stagiaire bij zorgboerderij Zevenblad. Marieke heeft een verslag over mevrouw Olsen gemaakt.',
+    bands:[[10,2],[7,1]],
+    zinnen:[
+      {s:'Mevrouw is 75 jaar en bezoekt de zorgboerderij twee keer per week.', a:0, e:'Leeftijd en aantal keer per week zijn feiten.'},
+      {s:'Mevrouw is licht dementerend en woont dichtbij de zorgboerderij.', a:1, e:'‘Licht dementerend’ en ‘dichtbij’ zijn geen meetbare feiten in dit verslag: een inschatting van de schrijver.'},
+      {s:'Vandaag doet mevrouw mee aan twee activiteiten, één in de ochtend en één in de middag.', a:0, e:'Dit kun je zien en tellen.'},
+      {s:'Om ongeveer 9.00 uur zegt mevrouw tegen de activiteitenbegeleider: “Ik heb vandaag helemaal geen zin”.', a:1, e:'Volgens het correctievoorschrift subjectief: ‘ongeveer’ is niet precies. Schrijf liever de exacte tijd op.'},
+      {s:'Mevrouw wil niet naar de moestuin, maar ze vindt het wel leuk om te helpen met het verzorgen van de dieren.', a:1, e:'‘Vindt het leuk’ is een gevoel: dat kun je niet zien.'},
+      {s:'Van 10.00 uur tot 12.00 uur maakt mevrouw de hokken van de konijnen weer lekker schoon en voert mevrouw de kippen.', a:1, e:'‘Lekker schoon’ is een mening.'},
+      {s:'De lunch duurt van 12.30 uur tot 13.30 uur. Mevrouw eet twee boterhammen met kaas en drinkt een glas karnemelk.', a:0, e:'Tijden en wat ze eet en drinkt zijn feiten.'},
+      {s:'Om 14.00 uur start de middagactiviteit waaraan mevrouw meedoet.', a:0, e:'Een tijd en een activiteit: objectief.'},
+      {s:'Mevrouw is blij dat haar zus vandaag ook meedoet aan de activiteit bloemschikken.', a:1, e:'‘Blij’ is een gevoel. Objectief zou zijn: mevrouw lacht en zegt “fijn dat je er bent”.'},
+      {s:'Samen met haar zus maakt mevrouw een fleurig bloemstukje dat ze aan het eind van de dag mee mag nemen.', a:1, e:'‘Fleurig’ is een mening.'}
+    ]
+  },
+
+  kosten:{
+    title:'Kostenoverzicht knutselmiddag voor 8 kinderen en 25 volwassenen',
+    text:'Zorgboerderij Zevenblad viert binnenkort haar 10-jarig bestaan. Er wordt een knutselmiddag georganiseerd voor cliënten en hun familie. De zorgboerderij heeft een budget van € 300. Jij gaat berekenen wat de kosten zijn. Noteer de aantallen en de kosten in de tabel.',
+    uitvoering:['Lees de informatie hieronder en de prijslijst.','Kies waar mogelijk de goedkoopste optie.','Houd rekening met de aanbiedingen.','Vul de tabel in en bereken de kosten van de knutselmiddag.','Bereken of het bedrag van € 300 voldoende is.'],
+    facts:['Er komen 8 kinderen en 25 volwassenen.','Elk kind maakt een kralenketting.','Elke volwassene maakt een vlaggenlijn van stof.','Nodig per kind voor een kralenketting: 10 grote ronde kralen, 8 vierkante kralen, 5 platte kralen, 8 kleine ronde kralen en 0,6 meter elastiek.','Nodig per volwassene voor een vlaggenlijn: 0,5 meter stof, 8 meter katoenkoord (stevig), 1 schaar en 1 lijmstift.'],
+    info:`<h4>Prijslijst hobbywinkel</h4>
+      <table class="qtab"><thead><tr><th>soort kraal</th><th>aantal</th><th>prijs</th></tr></thead><tbody>
+        <tr><td>rond, groot</td><td>zakje met 10 kralen</td><td>€ 1,10</td></tr>
+        <tr><td>rond, klein</td><td>zakje met 10 kralen</td><td>€ 1,20</td></tr>
+        <tr><td>vierkant</td><td>per stuk</td><td>€ 0,15</td></tr>
+        <tr><td>plat</td><td>per stuk</td><td>€ 0,16</td></tr>
+        <tr><td colspan="3"><b>Kralen: bij meer dan € 30,00 aan kralen 15% korting op de kralen!</b></td></tr></tbody></table>
+      <table class="qtab" style="margin-top:8px"><tbody>
+        <tr><td>elastiek</td><td>€ 2,00 per verpakking van 5 meter</td></tr>
+        <tr><td>schaar (ergonomisch)</td><td>€ 4,75 per stuk<br><b>actie: 3 halen, 2 betalen</b></td></tr>
+        <tr><td>schaar</td><td>€ 3,95 per stuk</td></tr>
+        <tr><td>katoenkoord (stevig)</td><td>€ 14,70 per 100 meter</td></tr>
+        <tr><td>katoenkoord (dun)</td><td>€ 11,50 per 100 meter</td></tr>
+        <tr><td>lijmstift</td><td>€ 2,80 per stuk<br><b>elke 2de voor de halve prijs</b></td></tr>
+        <tr><td>stof</td><td>€ 5,50 per 0,5 meter</td></tr></tbody></table>`,
+    aantalIn:true,
+    secs:[
+      {h:'Kosten kralen', lines:[
+        {id:'groot', l:'zakje grote ronde kralen (10 kralen)', aantal:8, ans:8.8, calc:'8 x 10 = 80 kralen → 8 zakjes → 8 x 1,10', hint:'8 kinderen × 10 kralen = 80 kralen. In een zakje zitten 10 kralen.'},
+        {id:'vierk', l:'vierkante kralen, per stuk', aantal:64, ans:9.6, calc:'8 x 8 = 64 → 64 x 0,15', hint:'8 kinderen × 8 kralen. Je betaalt per stuk.'},
+        {id:'plat', l:'platte kralen, per stuk', aantal:40, ans:6.4, calc:'8 x 5 = 40 → 40 x 0,16', hint:'8 kinderen × 5 kralen. Je betaalt per stuk.'},
+        {id:'klein', l:'zakje kleine ronde kralen (10 kralen)', aantal:7, ans:8.4, calc:'8 x 8 = 64 kralen → 7 zakjes → 7 x 1,20', hint:'Je hebt 64 kralen nodig. 6 zakjes (60 kralen) is te weinig.'},
+        {id:'totK', l:'totaal', f:v=>v.groot+v.vierk+v.plat+v.klein, hint:'Tel de vier bedragen op.'},
+        {id:'kort', l:'eventuele korting', f:v=>v.totK>30?r2(v.totK*0.15):0, calc:'15% van 33,20', hint:'Is het totaal meer dan € 30,00? Dan krijg je 15% korting. Vul het kortingsbedrag in.'},
+        {id:'totKr', l:'totale kosten kralen', f:v=>v.totK-v.kort, hint:'Totaal min de korting.'}]},
+      {h:'Kosten overige producten', lines:[
+        {id:'elast', l:'elastiek, per verpakking', aantal:1, ans:2, calc:'8 x 0,6 m = 4,8 m → 1 verpakking → 1 x 2,00', hint:'8 kinderen × 0,6 meter. Een verpakking is 5 meter.'},
+        {id:'stof', l:'stof, per 0,5 meter', aantal:25, ans:137.5, calc:'25 x 5,50', hint:'Iedere volwassene heeft 0,5 meter stof nodig.'},
+        {id:'koord', l:'katoenkoord (stevig), per 100 m', aantal:2, ans:29.4, calc:'25 x 8 m = 200 m → 2 x 14,70', hint:'25 × 8 meter = 200 meter. Kies het stevige koord.'},
+        {id:'lijm', l:'lijmstift, per stuk', aantal:25, ans:53.2, calc:'(13 x 2,80) + (12 x 1,40)', hint:'Elke 2de stift is half geld. Van 25 stiften betaal je er 13 heel en 12 half.'},
+        {id:'schaar', l:'schaar, per stuk', aantal:25, ans:80.75, calc:'ergonomisch: 17 x 4,75 (8 gratis)', hint:'Vergelijk 25 gewone scharen met 25 ergonomische scharen (3 halen, 2 betalen). Welke is goedkoper?'},
+        {id:'totO', l:'totale kosten overige producten', f:v=>v.elast+v.stof+v.koord+v.lijm+v.schaar, hint:'Tel de vijf bedragen op.'}]},
+      {h:'totaal', lines:[
+        {id:'c1', l:'totale kosten kralen', f:v=>v.totKr, copy:true},
+        {id:'c2', l:'totale kosten overige producten', f:v=>v.totO, copy:true},
+        {id:'tot', l:'totale kosten knutselmiddag', f:v=>v.c1+v.c2}]}
+    ],
+    concl:{budget:300, q:'Zorgboerderij Zevenblad heeft een budget van € 300 voor de knutselmiddag. Is het budget voldoende?', ja:'Ja, het budget is voldoende. Er blijft over: €', nee:'Nee, het budget is onvoldoende. Er is een tekort van: €'},
+    score:{mode:'bands', max:5, bands:[[7,5],[6,4],[5,3],[4,2],[3,1]]},
+    aspects:[
+      {l:'aantal en prijs van de grote ronde, vierkante, platte en kleine ronde kralen juist', ids:['groot','vierk','plat','klein'], aantal:true},
+      {l:'de juiste korting bij de kralen (€ 4,98)', ids:['kort']},
+      {l:'de totale kosten van de kralen juist', ids:['totK','totKr']},
+      {l:'bij de overige producten aantal en prijs juist', ids:['elast','stof','koord','lijm','schaar'], aantal:true},
+      {l:'de totale kosten van de overige producten juist', ids:['totO']},
+      {l:'de totale kosten van de knutselmiddag juist', ids:['c1','c2','tot']},
+      {l:'het juiste antwoord en het juiste bedrag bij de vraag', concl:true}
+    ]
+  },
+
+  quizBB:[
+    {t:'mc', ctx:'Mevrouw Olsen is licht dementerend.', q:'Wat helpt haar bij een activiteit?', o:['korte, duidelijke zinnen en één stap tegelijk','veel uitleg in één keer','snel praten, zodat ze bijblijft'], a:0, e:'Mensen met dementie hebben baat bij rust, korte zinnen en één stap tegelijk.'},
+    {t:'matrix', q:'Is de zin objectief of subjectief?', cols:['objectief','subjectief'], rows:[
+      {s:'Mevrouw drinkt een glas karnemelk.', a:0},
+      {s:'Mevrouw heeft vandaag een slecht humeur.', a:1},
+      {s:'Om 10.00 uur voert mevrouw de kippen.', a:0}], e:'Wat je ziet en een tijd zijn feiten. ‘Slecht humeur’ is een inschatting.'},
+    {t:'mc', ctx:'Je leert een cliënt een konijn borstelen.', q:'Hoe doe je dat?', o:['eerst zelf voordoen, dan de cliënt laten proberen','het alleen vertellen','de cliënt meteen zelf laten doen zonder uitleg'], a:0, e:'Voordoen – nadoen – helpen waar nodig.'},
+    {t:'mc', q:'Welke activiteit stimuleert vooral de grove motoriek?', o:['een kruiwagen duwen in de moestuin','kralen rijgen','een puzzel maken'], a:0, e:'Bij grove motoriek gebruik je je hele lichaam.'},
+    {t:'mc', q:'Waarom laat je cliënten zoveel mogelijk zelf doen?', o:['zo blijven ze zelfstandig en voelen ze zich nuttig','dan hoeft de begeleider niets te doen','dat gaat sneller'], a:0, e:'Zelf doen houdt mensen zelfstandig en geeft een goed gevoel.'},
+    {t:'matrix', q:'Is dit juist of onjuist?', cols:['juist','onjuist'], rows:[
+      {s:'Na het knuffelen van de dieren was je je handen.', a:0},
+      {s:'Na het voeren van de kippen eet je meteen een broodje.', a:1},
+      {s:'Bij het kaarsen maken let je op de hete was.', a:0}], e:'Na contact met dieren altijd handen wassen. Hete was: oppassen voor brandwonden.'},
+    {t:'mc', q:'Wat staat er in een rooster?', o:['wie, wanneer en waar werkt','welk weer het wordt','wat de cliënten graag eten'], a:0, e:'Een rooster laat zien wie wanneer waar is ingedeeld.'},
+    {t:'mc', ctx:'Een zakje met 10 kralen kost € 1,10. Je hebt 40 kralen nodig.', q:'Wat kost dat?', o:['€ 4,40','€ 1,10','€ 44,00'], a:0, e:'40 kralen = 4 zakjes. 4 × € 1,10 = € 4,40.'}
+  ],
+  quizKB:[
+    {t:'mc', ctx:'Een nieuwe cliënt komt voor het eerst op de zorgboerderij.', q:'Hoe stel je hem op zijn gemak?', o:['welkom heten, jezelf voorstellen en de boerderij laten zien','hem meteen aan het werk zetten','hem laten wachten tot de groep klaar is','hem alleen een folder geven'], a:0, e:'Gastvrij ontvangen: welkom heten, voorstellen en wegwijs maken.'},
+    {t:'matrix', q:'Is de zin objectief of subjectief?', cols:['objectief','subjectief'], rows:[
+      {s:'Mevrouw eet twee boterhammen met kaas.', a:0},
+      {s:'Mevrouw vindt het leuk om de dieren te verzorgen.', a:1},
+      {s:'De activiteit start om 14.00 uur.', a:0},
+      {s:'Mevrouw maakt een fleurig bloemstukje.', a:1}], e:'‘Vindt het leuk’ en ‘fleurig’ zijn meningen. Wat ze eet en een tijd zijn feiten.'},
+    {t:'mc', q:'Met welke vraag achterhaal je de wensen van een cliënt het best?', o:['“Wat doet u graag in uw vrije tijd?”','“Wilt u nu naar de moestuin?”','“U gaat toch ook mee?”','“Bent u klaar?”'], a:0, e:'Een open vraag geeft de cliënt ruimte om te vertellen wat hij wil.'},
+    {t:'mc', ctx:'Een cliënt zegt: “Dat kan ik toch niet meer.”', q:'Wat doe je?', o:['je moedigt hem aan en laat hem een klein deel zelf doen','je neemt het werk over','je zegt dat hij het dan maar moet laten','je vraagt een andere cliënt'], a:0, e:'Stimuleren tot zelf doen: begin met een klein, haalbaar stukje en geef een compliment.'},
+    {t:'match', q:'Welk kenmerk hoort bij de beschrijving?', items:[{l:'Wie het eerst bij de finish is, wint.',a:0},{l:'Twee kinderen duwen samen één kruiwagen.',a:1},{l:'Ieder kind bedenkt zelf een ontwerp.',a:2},{l:'De kinderen rijgen kleine kralen aan een draad.',a:3}], o:['heeft een competitie-element','stimuleert het samenwerken','stimuleert de creativiteit','stimuleert de fijne motoriek'], e:'Lees goed wat de deelnemers vooral doen.'},
+    {t:'mc', ctx:'Er moeten minimaal 2 en maximaal 3 cliënten bij een activiteit. Op een dagdeel staan 4 cliënten in de moestuin.', q:'Wat doe je?', o:['je plant één cliënt bij een andere activiteit in die past bij zijn voorkeur','niets, 4 is ook goed','je sluit de moestuin','je haalt een begeleider weg'], a:0, e:'Houd je aan de regels van het rooster én aan de voorkeuren van de cliënten.'},
+    {t:'mc', q:'Hoe laat je deelnemers opruimen na het knutselen?', o:['je vertelt duidelijk wat waar moet en helpt waar nodig','je ruimt alles zelf op','je zegt “opruimen!” en loopt weg','opruimen doe je de volgende dag'], a:0, e:'Deelnemers laten opruimen hoort bij afronden. Geef duidelijke aanwijzingen.'},
+    {t:'mc', ctx:'Een lijmstift kost € 2,80. Elke 2de is voor de halve prijs.', q:'Wat kosten 4 lijmstiften?', o:['€ 8,40','€ 11,20','€ 5,60','€ 7,00'], a:0, e:'2 × € 2,80 + 2 × € 1,40 = € 8,40.'}
+  ],
+
+  kaarten:{
+    text:'Zorgboerderij Zevenblad organiseert veel activiteiten voor de kinderen. De begeleiders hebben een kaartenbak met activiteiten om uit te kiezen. Vul de kaarten voor de kaartenbak verder in. Beoordeel daarna of de activiteiten geschikt zijn voor de twee groepen kinderen.',
+    deel1:[
+      {t:'Eieren rapen', d:'De kinderen zoeken eieren in het kippenhok en leggen ze voorzichtig in een mandje.', n:'1-4', tijd:'20 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert vooral de fijne motoriek','stimuleert de zorg voor dieren','heeft een competitie-element','stimuleert de creativiteit','stimuleert het samenwerken'], a:[1,2], e:'Voorzichtig eieren pakken = fijne motoriek. Je zorgt voor de kippen. Er is geen winnaar en je doet het niet samen.'},
+      {t:'Kruiwagenrace', d:'Twee aan twee: de één tilt de benen op, de ander loopt op zijn handen. Het tweetal dat het eerst bij de finish is, wint.', n:'4-12', tijd:'20 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert vooral de fijne motoriek','heeft een competitie-element','stimuleert het samenwerken','stimuleert de creativiteit','stimuleert de taalontwikkeling'], a:[0,2,3], e:'Je hele lijf (grove motoriek), er is een winnaar (competitie) en je doet het samen.'},
+      {t:'Natuurcollage', d:'De kinderen verzamelen bladeren en takjes. Ze plakken naar eigen ontwerp een collage.', n:'1-8', tijd:'45 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert vooral de fijne motoriek','stimuleert de creativiteit','heeft een competitie-element','stimuleert de oog-hand coördinatie','stimuleert de sociale interactie'], a:[1,2,4], e:'Plakken (fijne motoriek, oog-hand) naar eigen ontwerp (creativiteit). Iedereen werkt voor zichzelf.'},
+      {t:'Dierenkwartet', d:'De kinderen vragen om de beurt een kaart aan elkaar en doen het geluid van het dier na. Wie de meeste kwartetten heeft, wint.', n:'3-5', tijd:'30 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert de taalontwikkeling','stimuleert de sociale interactie','heeft een competitie-element','stimuleert de creativiteit','stimuleert vooral de fijne motoriek'], a:[1,2,3], e:'Vragen stellen en praten (taal), met elkaar spelen (sociale interactie) en een winnaar (competitie).'}
+    ],
+    groepen:[
+      {n:'Groep 1', d:'5 kinderen van 5 tot 7 jaar met autisme. Ze houden van vaste stappen en rust, en schrikken van harde geluiden. Een activiteit duurt maximaal 30 minuten.'},
+      {n:'Groep 2', d:'6 kinderen van 9 tot 12 jaar met een lichamelijke beperking. Twee kinderen lopen met een rollator. Ze werken graag met hun handen en vinden het leuk om iets te maken dat ze mee naar huis nemen.'}],
+    deel2:[
+      {t:'Kaarsen dompelen', d:'In de kaarsenmakerij dompelen de kinderen aan tafel een lont steeds opnieuw in gekleurde was. Ze nemen hun kaars mee naar huis.', n:'2-6', tijd:'45 minuten', kenm:['stimuleert vooral de fijne motoriek','stimuleert de creativiteit'], a:[false,true], e:'Aan tafel, met de handen en iets om mee te nemen: past bij groep 2. Voor groep 1 duurt het te lang (45 minuten).'},
+      {t:'Konijnen borstelen', d:'In de dierenwei gaan de kinderen op een kleed in het gras zitten. Ze borstelen een konijn in vaste stappen. Het is er rustig.', n:'1-5', tijd:'20 minuten', kenm:['stimuleert vooral de fijne motoriek','stimuleert de zorg voor dieren'], a:[true,false], e:'Rustig, vaste stappen en kort: past bij groep 1. Op het gras zitten is lastig met een rollator.'},
+      {t:'Trekkertocht', d:'De kinderen klimmen op de aanhanger van de trekker en rijden met harde muziek over de boerderij.', n:'6-12', tijd:'60 minuten', kenm:['stimuleert de sociale interactie'], a:[false,false], e:'Harde muziek en een uur lang: niet voor groep 1. Op de aanhanger klimmen lukt niet met een rollator. Ongeschikt voor beide groepen.'}
+    ]
+  },
+
+  rooster:{
+    title:'Weekrooster cliënten',
+    text:'Op zorgboerderij Zevenblad werken cliënten en begeleiders volgens een rooster. De cliënten helpen in de moestuin, in de boerderijwinkel en in de kaarsenmakerij. Het weekrooster voor de begeleiders is al gemaakt (de namen staan in de vakjes). De stagebegeleider vraagt jou om het weekrooster voor de cliënten in te vullen.',
+    uitvoering:['Klik eerst op de naam van de cliënt en dan op de juiste plaats in het weekrooster.','Houd rekening met de voorkeuren en de beschikbaarheid van de cliënten.','Houd rekening met het aantal dagdelen dat de cliënt moet worden ingepland.','Houd rekening met het rooster voor de begeleiders.','Er worden minimaal 2 en maximaal 3 cliënten bij een activiteit ingepland.','Op maandag (hele dag) en vrijdagmiddag is de boerderijwinkel gesloten.','De kaarsenmakerij is gesloten op woensdag.'],
+    tip:'Begin met het inplannen van Marco.',
+    unit:'dagdelen', min:2, max:3,
+    slots:DAGDELEN,
+    acts:[{id:'moestuin',l:'moestuin'},{id:'winkel',l:'boerderijwinkel'},{id:'kaarsen',l:'kaarsenmakerij'}],
+    closed:(s,a)=> (a==='winkel'&&(s.startsWith('ma')||s==='vr-m')) || (a==='kaarsen'&&s.startsWith('wo')),
+    closedL:'gesloten',
+    info:(s,a)=>{ const m=B_BEG[a]; const n=m[s]||m[s.slice(0,2)]; return n?'begeleider: '+n:''; },
+    people:[
+      {n:'Marco', k:10, w:['komt elke dag','helpt in de moestuin, behalve vrijdagochtend; dan helpt hij in de boerderijwinkel']},
+      {n:'Yari', k:7, w:['helpt altijd ’s ochtends in de boerderijwinkel','gaat op maandag (hele dag) en donderdagmiddag naar de kaarsenmakerij']},
+      {n:'Jolijn', k:7, w:['helpt maandag tot en met donderdag elke middag in de moestuin','gaat op donderdagochtend en vrijdag (hele dag) naar de kaarsenmakerij']},
+      {n:'Luvia', k:6, w:['komt op maandag t/m woensdag','wordt altijd door Anneke begeleid']},
+      {n:'Tanja', k:8, w:['werkt op donderdag in de boerderijwinkel','wordt op dinsdag, woensdag en vrijdag (hele dagen) door Anneke begeleid','maandag vrij']},
+      {n:'Samed', k:8, w:['wordt op vrijdagochtend begeleid door Pieter; de andere ochtenden is Edris zijn begeleider','werkt ’s middags in de boerderijwinkel']},
+      {n:'Jan', k:6, w:['als begeleider Pieter is ingeroosterd, begeleidt hij Jan','op dinsdag wordt Jan begeleid door Maryam']}
+    ],
+    sol:{
+      Marco:sol('ma-o:moestuin ma-m:moestuin di-o:moestuin di-m:moestuin wo-o:moestuin wo-m:moestuin do-o:moestuin do-m:moestuin vr-o:winkel vr-m:moestuin'),
+      Yari:sol('di-o:winkel wo-o:winkel do-o:winkel vr-o:winkel ma-o:kaarsen ma-m:kaarsen do-m:kaarsen'),
+      Jolijn:sol('ma-m:moestuin di-m:moestuin wo-m:moestuin do-m:moestuin do-o:kaarsen vr-o:kaarsen vr-m:kaarsen'),
+      Luvia:sol('ma-o:kaarsen ma-m:kaarsen di-o:kaarsen di-m:kaarsen wo-o:winkel wo-m:winkel'),
+      Tanja:sol('di-o:kaarsen di-m:kaarsen vr-o:kaarsen vr-m:kaarsen wo-o:winkel wo-m:winkel do-o:winkel do-m:winkel'),
+      Samed:sol('ma-o:moestuin di-o:moestuin wo-o:moestuin do-o:moestuin vr-o:moestuin di-m:winkel wo-m:winkel do-m:winkel'),
+      Jan:sol('di-o:winkel di-m:winkel do-o:kaarsen do-m:kaarsen vr-o:moestuin vr-m:moestuin')
+    },
+    secs:null /* wordt per cliënt gemaakt: aantal + plek (14 aspecten) */,
+    bands:[[14,6],[12,5],[10,4],[8,3],[5,2],[2,1]]
+  }
+};
+
+/* =========================================================
+   OEFENEXAMEN C — opbouw cspe 2024
+   Vakantiepark Zeester
+   ========================================================= */
+const C_OPEN={zwem:{'ma-o':11,'di-o':6,'do-o':9,'vr-m':5}, basket:{'ma-m':14,'di-m':6,'do-m':6,'vr-o':6}, paard:{'di-o':4,'wo-o':4,'do-o':4}, schilder:{'di-o':6,'di-m':6,'wo-o':6,'wo-m':3}, koken:{'ma-o':6,'di-o':5,'di-m':3,'wo-o':6,'wo-m':6,'do-o':6,'do-m':7}};
+const CASE_C = {
+  id:'C', versie:'versie C', stijl:'opbouw cspe 2024',
+  place:'Vakantiepark Zeester', town:'vakantiepark',
+  intro:'Vakantiepark Zeester is voor gezinnen en groepen met een of meer kinderen met een beperking. Buiten de schoolvakanties zijn gasten met een beperking van alle leeftijden en hun gezin en/of begeleiders welkom. Op het vakantiepark kunnen gasten verblijven in vakantiehuisjes. Een animatieteam biedt activiteiten aan die zijn afgestemd op het kind met een beperking en ook op de broers en/of zussen.',
+  topics:'verslag · kostenoverzicht · kaarten · weekrooster animatieteam',
+
+  verslag:{
+    text:'Liz is stagiaire bij het animatieteam van vakantiepark Zeester. Zij heeft de kinderen tijdens de knutselochtend geobserveerd en heeft hier een verslag van gemaakt.',
+    bands:[[15,2],[11,1]],
+    zinnen:[
+      {s:'De moeder vertelde dat Fatma vannacht maar 7 uur geslapen heeft en daardoor erg moe is.', a:1, e:'‘Maar’, ‘daardoor’ en ‘erg moe’ zijn een inschatting.'},
+      {s:'Lisa heeft bij de lunch één boterham met kaas gegeten en één met appelstroop.', a:0, e:'Wat iemand eet, kun je zien.'},
+      {s:'Fiona was tijdens de lunch erg vrolijk en vertelde een mop.', a:1, e:'‘Erg vrolijk’ is een inschatting van de schrijver.'},
+      {s:'Lars heeft veel zin om vandaag te gaan knutselen met lijm en papier.', a:1, e:'‘Veel zin’ is een gevoel dat je niet kunt zien.'},
+      {s:'In de pauze heeft Bilal op de bank gelegen en televisie gekeken.', a:0, e:'Dit kun je zien: objectief.'},
+      {s:'Na de pauze heeft Simone een tekening gemaakt voor de medewerkers van vakantiepark Zeester.', a:0, e:'Een feit.'},
+      {s:'Ilona heeft met stiften naar Daan gegooid en Daan heeft teruggegooid.', a:0, e:'Gedrag dat je ziet: objectief.'},
+      {s:'Daniel heeft de plaatjes met plakband vastgeplakt op het papier.', a:0, e:'Een feit.'},
+      {s:'Carla heeft melk gedronken en een rijstwafel gegeten tijdens de pauze.', a:0, e:'Een feit.'},
+      {s:'Na de pauze was Carla boos, omdat zij de rijstwafel niet lekker vond.', a:1, e:'‘Boos omdat …’ en ‘niet lekker’ zijn inschattingen.'},
+      {s:'Carla heeft samen met Daniel een kleurig schilderij gemaakt zonder veel te mopperen.', a:1, e:'‘Kleurig’ en ‘zonder veel te mopperen’ zijn meningen.'},
+      {s:'Deveny heeft lijm op de grond laten vallen toen zij aan het knutselen was.', a:0, e:'Een feit.'},
+      {s:'Ferry vond het niet leuk om mee te helpen met opruimen.', a:1, e:'‘Vond het niet leuk’ is een gevoel.'},
+      {s:'Ferry heeft samen met Deveny een liedje gezongen.', a:0, e:'Een feit.'},
+      {s:'De kinderen hebben het vandaag erg naar hun zin gehad.', a:1, e:'Een mening van de schrijver.'}
+    ]
+  },
+
+  kosten:{
+    title:'Kostenoverzicht vakantie woongroep Plataan',
+    text:'Plataan is een woongroep voor kinderen met een lichamelijke beperking. Woongroep Plataan wil in december twee weken vakantie houden in vakantiepark Zeester. Bereken en noteer de kosten in de tabel.',
+    uitvoering:['Bekijk de informatie hieronder en de bijlage (prijslijsten).','Kies waar mogelijk de goedkoopste optie en houd rekening met de aanbiedingen.','Bereken de kosten van de vakantiehuisjes en de extra’s.','Beantwoord de vraag onder de tabel.'],
+    facts:['Woongroep Plataan heeft € 6.750 gespaard.','De groep bestaat uit 12 kinderen en 4 begeleiders.','Per 3 kinderen is er dag en nacht 1 begeleider bij.','De groep wil graag 2 weken aaneengesloten op vakantie: van 12 tot en met 26 december óf van 19 december tot en met 2 januari.','Extra’s: handdoekensets voor de kinderen in de eerste én de tweede week · in 1 huisje een kerstboom met versiering · 1x de huifkartocht voor kinderen en begeleiders · 1x 2 uur de aangepaste skelters, alleen voor de kinderen · 1x pannenkoeken eten voor kinderen en begeleiders · 1x gourmetten voor kinderen, begeleiders en 14 ouders die een avond op bezoek komen · 14 ochtenden ontbijtbroodjes-service voor de hele groep.'],
+    info:`<p><b>Vroegboekkorting!</b> Nu boeken = 10% korting op de prijzen van de huisjes.</p>
+      <table class="qtab"><caption>Prijslijst vakantiehuisjes per week</caption><thead><tr><th></th><th>4-pers.</th><th>6-pers.</th><th>8-pers.</th><th>8-pers. luxe</th></tr></thead><tbody>
+        <tr><td>laag seizoen</td><td>€ 805</td><td>€ 880</td><td>€ 1.045</td><td>€ 1.650</td></tr>
+        <tr><td>midden seizoen</td><td>€ 955</td><td>€ 1.065</td><td>€ 1.290</td><td>€ 1.920</td></tr>
+        <tr><td>hoog seizoen</td><td>€ 1.205</td><td>€ 1.345</td><td>€ 1.675</td><td>€ 2.475</td></tr></tbody></table>
+      <p class="small muted">Aankomst en vertrek op vrijdag. Reserveringskosten € 22,50 per boeking.</p>
+      <table class="qtab"><caption>Seizoenen december / januari</caption><tbody>
+        <tr><td>vr 5 dec – vr 12 dec</td><td>midden seizoen</td></tr>
+        <tr><td>vr 12 dec – vr 19 dec</td><td>midden seizoen</td></tr>
+        <tr><td>vr 19 dec – vr 26 dec</td><td>hoog seizoen</td></tr>
+        <tr><td>vr 26 dec – vr 2 jan</td><td>hoog seizoen</td></tr>
+        <tr><td>vr 2 jan – vr 9 jan</td><td>laag seizoen</td></tr></tbody></table>
+      <h4>Maaltijden</h4>
+      <table class="qtab"><tbody>
+        <tr><td>dinerbuffet (p.p.), vanaf 10 personen 10% korting</td><td>€ 18,00</td></tr>
+        <tr><td>gourmetten (p.p.), <b>kinderen halve prijs</b></td><td>€ 17,50</td></tr>
+        <tr><td>ontbijtbuffet (p.p.), elke 4e persoon gratis</td><td>€ 16,50</td></tr>
+        <tr><td>pannenkoeken eten (p.p.), <b>actie: elke 4e persoon gratis</b></td><td>€ 8,50</td></tr>
+        <tr><td>ontbijtbroodjes-service (per dag, per persoon)</td><td>€ 1,35</td></tr></tbody></table>
+      <h4>Activiteiten</h4>
+      <table class="qtab"><tbody>
+        <tr><td>aangepast minigolf (p.p.)</td><td>€ 3,80</td></tr>
+        <tr><td>aangepaste skelters (p.p., per 2 uur)</td><td>€ 7,70</td></tr>
+        <tr><td>huifkartocht (max. 25 personen, per ochtend)</td><td>€ 145,00</td></tr>
+        <tr><td>paardrijden (8 tot 10 personen, 1 uur)</td><td>€ 125,00</td></tr></tbody></table>
+      <h4>Extra’s</h4>
+      <table class="qtab"><tbody>
+        <tr><td>huur handdoeken (per set)</td><td>€ 7,30</td></tr>
+        <tr><td>opgemaakte bedden (per bed)</td><td>€ 5,00</td></tr>
+        <tr><td>kerstboom (per bungalow)</td><td>€ 30,00</td></tr>
+        <tr><td>kerstboomversiering (per bungalow)</td><td>€ 7,50</td></tr></tbody></table>`,
+    aantalIn:true,
+    secs:[
+      {h:'huur', lines:[
+        {id:'w1', l:'vakantiehuisje(s) week 1', pick:{label:'aankomst',o:['12 december','19 december'],a:'12 december'}, aantal:2, ans:2580, calc:'2 x 1.290 (12–19 dec, midden seizoen)', hint:'16 personen: je hebt 2 huisjes voor 8 personen nodig. Vergelijk welke twee weken het goedkoopst zijn.'},
+        {id:'w2', l:'vakantiehuisje(s) week 2', aantal:2, ans:3350, calc:'2 x 1.675 (19–26 dec, hoog seizoen)', hint:'Kijk in welk seizoen de tweede week valt.'},
+        {id:'totH', l:'totaal', f:v=>v.w1+v.w2, hint:'Tel week 1 en week 2 op.'},
+        {id:'kort', l:'eventuele korting', f:v=>r2(v.totH*0.10), calc:'10% van 5.930', hint:'Vroegboekkorting: 10% van het totaal van de huisjes.'},
+        {id:'totHuis', l:'totaal vakantiehuisje(s)', f:v=>v.totH-v.kort, hint:'Totaal min de korting.'}]},
+      {h:'extra’s', lines:[
+        {id:'hand', l:'handdoekensets', ans:175.2, calc:'24 x 7,30', hint:'Alleen voor de 12 kinderen, maar wel 2 weken.'},
+        {id:'kerst', l:'versierde kerstboom', ans:37.5, calc:'30,00 + 7,50', hint:'Kerstboom én versiering, voor 1 huisje.'},
+        {id:'huif', l:'huifkartocht', ans:145, calc:'1 x 145,00', hint:'De prijs is per ochtend, voor maximaal 25 personen.'},
+        {id:'skel', l:'aangepaste skelters', ans:92.4, calc:'12 x 7,70', hint:'Alleen voor de kinderen.'},
+        {id:'pann', l:'pannenkoeken', ans:102, calc:'16 personen, elke 4e gratis → 12 x 8,50', hint:'16 personen. Elke 4e persoon is gratis.'},
+        {id:'gour', l:'gourmetten', ans:420, calc:'(12 x 8,75) + (18 x 17,50)', hint:'Kinderen halve prijs. 4 begeleiders + 14 ouders betalen de hele prijs.'},
+        {id:'brood', l:'ontbijtbroodjes-service', ans:302.4, calc:'14 (dagen) x 16 (pers.) x 1,35', hint:'14 ochtenden voor 16 personen.'},
+        {id:'totE', l:'totaal extra’s', f:v=>v.hand+v.kerst+v.huif+v.skel+v.pann+v.gour+v.brood, hint:'Tel alle extra’s op.'}]},
+      {h:'totaaloverzicht', lines:[
+        {id:'c1', l:'totaal huisje(s)', f:v=>v.totHuis, copy:true},
+        {id:'c2', l:'totaal extra’s', f:v=>v.totE, copy:true},
+        {id:'res', l:'reserveringskosten', ans:22.5, hint:'Zie de bijlage: per boeking.'},
+        {id:'tot', l:'totale kosten', f:v=>v.c1+v.c2+v.res}]}
+    ],
+    concl:{budget:6750, q:'Is het gespaarde bedrag (€ 6.750) voldoende om de totale kosten te betalen?', ja:'Ja, er blijft over: €', nee:'Nee, er is tekort: €', calcLine:true},
+    score:{mode:'count', max:5},
+    aspects:[
+      {l:'vakantiehuisjes: het juiste aantal (2 per week), de voordeligste weken (aankomst 12 december) en de juiste prijs', ids:['w1','w2'], aantal:true},
+      {l:'huur vakantiehuisjes: de juiste korting toegepast en een juiste totaalberekening', ids:['totH','kort','totHuis']},
+      {l:'extra’s: de juiste berekeningen (inclusief acties) en juist opgeteld', ids:['hand','kerst','huif','skel','pann','gour','brood','totE']},
+      {l:'totaaloverzicht juist berekend', ids:['c1','c2','res','tot']},
+      {l:'het juiste antwoord en bedrag bij de conclusie', concl:true}
+    ]
+  },
+
+  quizBB:[
+    {t:'matrix', q:'Is de zin objectief of subjectief?', cols:['objectief','subjectief'], rows:[
+      {s:'Lisa at een boterham met kaas.', a:0},
+      {s:'Fiona was erg vrolijk.', a:1},
+      {s:'Deveny liet lijm op de grond vallen.', a:0}], e:'Wat je ziet, is objectief. ‘Erg vrolijk’ is een inschatting.'},
+    {t:'mc', ctx:'Een kind in een rolstoel wil meedoen met basketbal.', q:'Wat is een goede aanpassing?', o:['een lagere basket of een grotere bal','het kind laten kijken','het spel stoppen'], a:0, e:'Pas de activiteit aan, zodat iedereen mee kan doen.'},
+    {t:'mc', q:'Welke activiteit stimuleert vooral de fijne motoriek?', o:['een armbandje van kralen maken','stoelendans','rolstoelbasketbal'], a:0, e:'Kralen rijgen doe je met je vingers.'},
+    {t:'mc', q:'Welke activiteit heeft een competitie-element?', o:['stoelendans: wie overblijft, wint','samen een schilderij maken','een tekening kleuren'], a:0, e:'Bij een competitie is er een winnaar.'},
+    {t:'mc', q:'Waarom moet er bij het zwemmen een bevoegde zweminstructeur zijn?', o:['voor de veiligheid van de kinderen in het water','omdat hij het leukst is','omdat dat goedkoper is'], a:0, e:'Bij zwemmen gaat veiligheid voor alles.'},
+    {t:'mc', ctx:'Je legt een spel uit aan kinderen met een verstandelijke beperking.', q:'Wat doe je?', o:['korte zinnen gebruiken, voordoen en laten nadoen','alles in één keer vertellen','moeilijke woorden gebruiken'], a:0, e:'Kort, eenvoudig en voordoen.'},
+    {t:'mc', q:'Welke vraag stel je aan het eind van een activiteit?', o:['“Wat vond je het leukst?”','“Waarom ben je zo langzaam?”','“Wie heeft de troep gemaakt?”'], a:0, e:'Bij het evalueren stel je open, vriendelijke vragen.'},
+    {t:'mc', ctx:'Pannenkoeken eten kost € 8,50 per persoon. Elke 4e persoon is gratis.', q:'Wat betalen 8 personen?', o:['€ 51,00','€ 68,00','€ 59,50'], a:0, e:'Van 8 personen zijn er 2 gratis. 6 × € 8,50 = € 51,00.'}
+  ],
+  quizKB:[
+    {t:'matrix', q:'Is de zin objectief of subjectief?', cols:['objectief','subjectief'], rows:[
+      {s:'Bilal lag in de pauze op de bank.', a:0},
+      {s:'Lars heeft veel zin om te knutselen.', a:1},
+      {s:'Carla was boos, omdat ze de rijstwafel niet lekker vond.', a:1},
+      {s:'Ferry zong een liedje met Deveny.', a:0}], e:'Gevoelens (zin hebben, boos omdat …) zijn subjectief. Gedrag dat je ziet, is objectief.'},
+    {t:'mc', q:'Waarom is de zin “De kinderen hebben het vandaag erg naar hun zin gehad” subjectief?', o:['het is een mening van de schrijver: je kunt het niet zien of meten','omdat het over kinderen gaat','omdat het in de verleden tijd staat','omdat er geen naam in staat'], a:0, e:'Objectief zou zijn: “Alle kinderen hebben meegedaan en drie kinderen vroegen of het morgen weer kan.”'},
+    {t:'mc', ctx:'Bij 7 of meer deelnemers komt er een extra begeleider bij. Normaal zijn er 2. Bij zwemmen zijn 9 deelnemers.', q:'Hoeveel medewerkers plan je in?', o:['3','2','1','4'], a:0, e:'9 is meer dan 7: 2 medewerkers + 1 extra = 3.'},
+    {t:'mc', ctx:'Een groep kinderen van 5 tot 7 jaar kan maar kort stilzitten.', q:'Welke activiteit kies je?', o:['een bewegingsspel van 20 minuten','een schilderworkshop van 90 minuten','een film van 2 uur','een quiz met lange vragen'], a:0, e:'Kort en met veel beweging past bij deze groep.'},
+    {t:'match', q:'Welk kenmerk past het best bij de activiteit?', items:[{l:'armbandje van kralen maken',a:0},{l:'rolstoelbasketbal',a:1},{l:'in een deelbroek samen een route lopen',a:2},{l:'een kunstwerk naar eigen ontwerp',a:3}], o:['fijne motoriek','grove motoriek','sociale interactie','creativiteit'], e:'Kijk wat de deelnemers vooral doen.'},
+    {t:'mc', ctx:'Een kind schildert met te veel water op de kwast.', q:'Welke aanwijzing geef je?', o:['“Veeg je kwast even af aan de rand van het potje, dan druppelt het niet.”','“Dat doe je verkeerd.”','“Laat mij het maar doen.”','“Probeer het maar.”'], a:0, e:'Een goede aanwijzing zegt precies wat het kind kan doen.'},
+    {t:'mc', q:'Waarvoor gebruikt een animatieteam een kaartenbak met activiteiten?', o:['om snel een passende activiteit te kiezen voor een groep','om de kosten bij te houden','om het rooster te maken','om de gasten in huisjes in te delen'], a:0, e:'Op de kaarten staan kenmerken, aantal deelnemers en tijdsduur: zo kies je snel.'},
+    {t:'mc', ctx:'De vroegboekkorting is 10%. De huisjes kosten samen € 5.930.', q:'Hoeveel is de korting?', o:['€ 593,00','€ 59,30','€ 5.337,00','€ 1.000,00'], a:0, e:'10% van € 5.930 = € 593,00.'}
+  ],
+
+  kaarten:{
+    text:'Vakantiepark Zeester organiseert veel activiteiten voor de kinderen. Het animatieteam heeft een kaartenbak met activiteiten om uit te kiezen. Je stagebegeleider vraagt jou om enkele kaarten in te vullen. Ze vraagt jou ook om voor twee groepen kinderen een keuze te maken uit de activiteiten.',
+    deel1:[
+      {t:'Armbandje maken', d:'Elke deelnemer maakt naar eigen inzicht een armbandje van gekleurde kralen.', n:'1-6', tijd:'30 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert vooral de fijne motoriek','stimuleert de creativiteit','heeft een competitie-element','stimuleert de oog-hand coördinatie','stimuleert het samenwerken'], a:[1,2,4], e:'Kralen rijgen: fijne motoriek en oog-hand coördinatie. Naar eigen inzicht: creativiteit.'},
+      {t:'Stoelendans', d:'Er staat een aantal stoelen in een cirkel: één stoel minder dan het aantal deelnemers. Er wordt muziek gespeeld. De deelnemers proberen zo snel mogelijk een lege stoel te vinden zodra de muziek stopt. Wie geen stoel meer kan vinden doet niet meer mee, net zo lang tot er één deelnemer overblijft. Die is de winnaar.', n:'6-10', tijd:'30 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert vooral de fijne motoriek','stimuleert de sociale interactie','stimuleert de creativiteit','heeft een competitie-element','stimuleert het samenwerken'], a:[0,2,4], e:'Rondlopen en snel zitten (grove motoriek), met de groep spelen (sociale interactie) en er is een winnaar. Samenwerken doe je niet.'},
+      {t:'Knutselen', d:'Elke deelnemer maakt een kunstwerk naar eigen ontwerp.', n:'1-6', tijd:'30 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert vooral de fijne motoriek','stimuleert de taalontwikkeling','stimuleert de creativiteit','heeft een competitie-element','stimuleert de oog-hand coördinatie'], a:[1,3,5], e:'Knippen en plakken (fijne motoriek, oog-hand) naar eigen ontwerp (creativiteit).'},
+      {t:'Memory', d:'De kaartjes liggen omgekeerd op tafel. Om de beurt draait een deelnemer twee kaartjes om. Wie de meeste paren vindt, wint.', n:'2-4', tijd:'20 minuten', opts:['stimuleert vooral de grove motoriek','stimuleert het geheugen','heeft een competitie-element','stimuleert de creativiteit','stimuleert het samenwerken','stimuleert de sociale interactie'], a:[1,2,5], e:'Onthouden waar de kaartjes liggen (geheugen), een winnaar (competitie) en om de beurt met elkaar spelen (sociale interactie).'}
+    ],
+    groepen:[
+      {n:'Groep 1', d:'6 kinderen van 8 tot 10 jaar met ADHD. Ze bewegen graag en kunnen niet lang stilzitten. Ze doen graag iets samen met een ander kind. Een activiteit duurt maximaal 30 minuten.'},
+      {n:'Groep 2', d:'5 kinderen van 10 tot 12 jaar die in een rolstoel zitten. Ze werken graag met hun handen en maken graag iets moois.'}],
+    deel2:[
+      {t:'Broek delen', d:'De deelnemers hebben een deelbroek aan met draagbanden over hun schouders. Ze moeten in onderling overleg een route over het park afleggen.', n:'4', tijd:'40 minuten', kenm:['stimuleert vooral de grove motoriek','stimuleert de sociale interactie','stimuleert het samenwerken'], a:[false,false], e:'40 minuten is te lang voor groep 1 en groep 1 heeft 6 kinderen (de kaart zegt 4). Groep 2 kan niet lopen in een deelbroek. Ongeschikt voor beide groepen.'},
+      {t:'Houten kistje beschilderen', d:'Elke deelnemer beschildert met penseel en verf naar eigen inzicht een houten kistje.', n:'1-6', tijd:'30 minuten', kenm:['stimuleert vooral de fijne motoriek','stimuleert de creativiteit','stimuleert de oog-hand coördinatie'], a:[false,true], e:'Aan tafel met de handen iets moois maken: groep 2. Groep 1 moet dan 30 minuten stilzitten.'},
+      {t:'Dansen', d:'De deelnemers krijgen dansles in tweetallen. Ze overleggen tijdens het dansen hoe ze de aanwijzingen van de begeleider uitvoeren.', n:'4-6', tijd:'30 minuten', kenm:['stimuleert vooral de grove motoriek','stimuleert de sociale interactie','stimuleert het samenwerken'], a:[true,false], e:'Bewegen en samen met een ander kind: groep 1. Groep 2 zit in een rolstoel.'}
+    ]
+  },
+
+  rooster:{
+    title:'Weekrooster animatieteam',
+    text:'Het animatieteam van het vakantiepark verzorgt elke week een programma met activiteiten. De stagebegeleider heeft je gevraagd om een weekrooster te maken voor de medewerkers van het animatieteam (week 28: maandag 8 juli t/m vrijdag 12 juli).',
+    uitvoering:['Zet de namen van de medewerkers in het rooster. Er zijn ’s ochtends en ’s middags activiteiten.','Houd rekening met de bijzonderheden/wensen van de medewerkers en met het aantal dagdelen dat ze kunnen worden ingepland.','Bij elke activiteit zijn twee medewerkers aanwezig.','Bij het zwemmen moet één bevoegde zweminstructeur worden ingepland.','Bij het paardrijden moet één paardrijdinstructeur worden ingepland.','Bij 7 of meer deelnemers moet er een extra begeleider worden ingepland.','In de gestreepte vakjes zijn er geen activiteiten.'],
+    tip:'Begin met het inplannen van Joeri.',
+    unit:'dagdelen', min:2, max:3,
+    slots:DAGDELEN.map(d=>({...d, l:d.l+' '+({ma:'8',di:'9',wo:'10',do:'11',vr:'12'}[d.id.slice(0,2)])+' juli'})),
+    acts:[{id:'zwem',l:'zwemmen'},{id:'basket',l:'rolstoelbasketbal'},{id:'paard',l:'paardrijden'},{id:'schilder',l:'schilderen'},{id:'koken',l:'koken'}],
+    closed:(s,a)=> !(C_OPEN[a]&&C_OPEN[a][s]),
+    closedL:'',
+    info:(s,a)=> C_OPEN[a]&&C_OPEN[a][s]?C_OPEN[a][s]+' deelnemers':'',
+    people:[
+      {n:'Joeri', k:8, w:['bevoegd zweminstructeur','wil ook graag bij rolstoelbasketbal worden ingedeeld','woensdag afwezig']},
+      {n:'Amira', k:4, w:['kok','werkt alleen ’s ochtends']},
+      {n:'Melissa', k:6, w:['kok','wordt niet samen met Amira ingedeeld','wil ook graag bij paardrijden worden ingedeeld','maandag en vrijdag vrij']},
+      {n:'Mehmet', k:9, w:['wordt altijd bij zwemmen ingedeeld','wil graag bij koken worden ingedeeld','helpt maandag bij rolstoelbasketbal']},
+      {n:'Jasper', k:5, w:['helpt dinsdagochtend en donderdagochtend bij het koken','wil graag bij rolstoelbasketbal','maandag vrij']},
+      {n:'Richard', k:4, w:['paardrijdinstructeur','helpt op maandag met koken','vrijdag vrij']},
+      {n:'Thomas', k:4, w:['alleen schilderactiviteit','werkt dinsdag en woensdag']},
+      {n:'Erwin', k:8, w:['(stagiair)','wordt altijd bij schilderen ingedeeld','wordt ingezet als extra begeleider bij 7 of meer deelnemers','is op 12 juli vrij']}
+    ],
+    sol:{
+      Joeri:sol('ma-o:zwem di-o:zwem do-o:zwem vr-m:zwem ma-m:basket di-m:basket do-m:basket vr-o:basket'),
+      Amira:sol('ma-o:koken di-o:koken wo-o:koken do-o:koken'),
+      Melissa:sol('di-o:paard wo-o:paard do-o:paard di-m:koken wo-m:koken do-m:koken'),
+      Mehmet:sol('ma-o:zwem di-o:zwem do-o:zwem vr-m:zwem ma-m:basket di-m:koken wo-o:koken wo-m:koken do-m:koken'),
+      Jasper:sol('di-o:koken do-o:koken di-m:basket do-m:basket vr-o:basket'),
+      Richard:sol('ma-o:koken di-o:paard wo-o:paard do-o:paard'),
+      Thomas:sol('di-o:schilder di-m:schilder wo-o:schilder wo-m:schilder'),
+      Erwin:sol('ma-o:zwem do-o:zwem ma-m:basket di-o:schilder di-m:schilder wo-o:schilder wo-m:schilder do-m:koken')
+    },
+    solNote:'Er zijn soms meer goede oplossingen. De app kijkt na met de regels uit het correctievoorschrift, niet met dit ene voorbeeld.',
+    secs:[
+      {code:'a', title:'planning', max:2, mode:'bands', bands:[[3,2],[2,1]], items:[
+        {l:'bij elke activiteit het juiste aantal medewerkers (2, of 3 bij 7 of meer deelnemers)', ok:G=>Object.entries(C_OPEN).every(([a,m])=>Object.entries(m).every(([s,n])=>cell(G,s,a).length===(n>=7?3:2))), tip:'Kijk naar het aantal deelnemers in elk vakje.'},
+        {l:'bij elk zwemmen is de bevoegde zweminstructeur (Joeri) ingepland', ok:G=>Object.keys(C_OPEN.zwem).every(s=>has(G,'Joeri',s,'zwem'))},
+        {l:'bij elk paardrijden is de paardrijdinstructeur (Richard) ingepland', ok:G=>Object.keys(C_OPEN.paard).every(s=>has(G,'Richard',s,'paard'))}]},
+      {code:'b', title:'wensen medewerkers', max:4, mode:'bands', bands:[[12,4],[10,3],[8,2],[6,1]], items:[
+        {l:'Joeri is ingepland bij zwemmen en bij rolstoelbasketbal (en niet bij andere activiteiten)', ok:G=>onlyActs(G,'Joeri',['zwem','basket'])&&cellsOf(G,'Joeri').some(x=>x[1]==='zwem')&&cellsOf(G,'Joeri').some(x=>x[1]==='basket')},
+        {l:'Joeri is niet op woensdag ingepland', ok:G=>cnt(G,'Joeri')>0&&notDay(G,'Joeri','wo')},
+        {l:'Amira is alleen in de ochtenden ingepland', ok:G=>cnt(G,'Amira')>0&&cellsOf(G,'Amira').every(x=>x[0].endsWith('-o'))},
+        {l:'Melissa is niet op maandag en vrijdag ingepland', ok:G=>cnt(G,'Melissa')>0&&notDay(G,'Melissa','ma')&&notDay(G,'Melissa','vr')},
+        {l:'Melissa is ingepland bij koken en bij paardrijden (en niet bij andere activiteiten)', ok:G=>onlyActs(G,'Melissa',['koken','paard'])&&cellsOf(G,'Melissa').some(x=>x[1]==='koken')&&cellsOf(G,'Melissa').some(x=>x[1]==='paard')},
+        {l:'Mehmet is op maandag ingepland bij rolstoelbasketbal', ok:G=>has(G,'Mehmet','ma-m','basket')},
+        {l:'Jasper is dinsdagochtend en donderdagochtend ingepland bij het koken', ok:G=>has(G,'Jasper','di-o','koken')&&has(G,'Jasper','do-o','koken')},
+        {l:'Richard is op maandag ingepland bij het koken', ok:G=>has(G,'Richard','ma-o','koken')},
+        {l:'Richard is niet op vrijdag ingepland', ok:G=>cnt(G,'Richard')>0&&notDay(G,'Richard','vr')},
+        {l:'Thomas is ingepland bij schilderen (en niet bij andere activiteiten)', ok:G=>cnt(G,'Thomas')>0&&onlyActs(G,'Thomas',['schilder'])},
+        {l:'Erwin is dinsdag en woensdag ingepland bij schilderen', ok:G=>['di-o','di-m','wo-o','wo-m'].every(s=>has(G,'Erwin',s,'schilder'))},
+        {l:'Erwin is niet op 12 juli (vrijdag) ingepland', ok:G=>cnt(G,'Erwin')>0&&notDay(G,'Erwin','vr')}]}
+    ]
+  }
+};
+
+/* rooster B: aspecten per cliënt (aantal dagdelen + juiste plek), zoals in het correctievoorschrift */
+(function(){
+  const r=CASE_B.rooster;
+  const items=[];
+  r.people.forEach(p=>{
+    items.push({l:`${p.n} is ${p.k} dagdelen ingepland`, ok:G=>cnt(G,p.n)===p.k});
+    items.push({l:`${p.n} is op de juiste dagdelen bij de juiste werkzaamheden ingepland`, ok:G=>matchSol(G,r,p.n), tip:p.w.join('; ')});
+  });
+  r.secs=[{code:'', title:'weekrooster invullen', max:6, mode:'bands', bands:r.bands, items}];
+})();
+
+const CASES=[CASE_A, CASE_B, CASE_C];
+
+/* =========================================================
+   DOCENTEN — pas hier de lijst aan
+   ========================================================= */
+const DOCENTEN = [
+  {naam:'R. van Veen',  mail:'R.vanveen@sc-delfland.nl'},
+  {naam:'M. Delhaas',   mail:'M.delhaas@sc-delfland.nl'},
+  {naam:'L. Schreuder', mail:'L.schreuder@sc-delfland.nl'}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const KEY='oefenapp-ma-v1';
+let S = {name:'', klas:'', level:'kb', results:{}};
+try{ const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S, JSON.parse(raw)); }catch(e){}
+const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+const R=(cid)=> (S.results[cid] ||= {});
+let view={screen:'home', caseId:null, tab:'intro'};
+let runtime={};
+
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>[...el.querySelectorAll(s)];
+const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+const shuffle=(a)=>{a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;};
+const caseById=(id)=>CASES.find(c=>c.id===id);
+const shufQ=(q)=>{ const idx=shuffle(q.o.map((_,i)=>i)); return {...q, o:idx.map(i=>q.o[i]), a:idx.indexOf(q.a)}; };
+const r2=(n)=>Math.round(n*100)/100;
+const eur=(n)=> (isFinite(n)?n:0).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});
+const approx=(a,b)=> isFinite(a)&&isFinite(b)&&Math.abs(a-b)<0.006;
+const MAX={o1:2,o2:5,o3:8,o4:4,o5:6};
+const PARTS=[['o1','C1','zinnen uit een verslag beoordelen'],['o2','C2','een kostenoverzicht maken'],['o3','C3a','theorievragen (Facet)'],['o4','C3b','activiteiten beoordelen (Facet)'],['o5','C3c','een rooster invullen (Facet)']];
+const bb=()=>S.level==='bb';
+
+/* getal lezen zoals een leerling het typt: 48 · 48,00 · € 48,00 · 1.290 · 1.290,50 */
+function parseNum(s){
+  s=String(s==null?'':s).replace(/€|\s/g,'');
+  if(!s) return NaN;
+  if(s.includes(',')) s=s.replace(/\./g,'').replace(',','.');
+  else if(/^\d{1,3}(\.\d{3})+$/.test(s)) s=s.replace(/\./g,'');
+  return /^-?\d*\.?\d+$/.test(s)?parseFloat(s):NaN;
+}
+/* berekening uitrekenen: 12 x 4,00 · (6 x 2,25) + (6 x 2,50) */
+function calcExpr(s){
+  let t=String(s||'').trim(); if(!t) return NaN;
+  t=t.replace(/€/g,'').replace(/[x×X]/g,'*').replace(/:/g,'/').replace(/−/g,'-');
+  t=t.replace(/(\d)\.(\d{3})(?!\d)/g,'$1$2').replace(/,/g,'.');
+  if(!/^[\d\s.+\-*/()]+$/.test(t) || !/[+\-*/]/.test(t)) return NaN;
+  try{ const v=Function('"use strict";return ('+t+')')(); return isFinite(v)?v:NaN; }catch(e){ return NaN; }
+}
+
+/* =========================================================
+   ROOSTER-HULPJES (ook gebruikt in de data)
+   G = { 'slot|act': [namen] }
+   ========================================================= */
+function cell(G,s,a){ return G[s+'|'+a]||[]; }
+function cellsOf(G,n){ return Object.entries(G).filter(([k,v])=>v.includes(n)).map(([k])=>k.split('|')); }
+function cnt(G,n){ return cellsOf(G,n).length; }
+function has(G,n,s,a){ return cell(G,s,a).includes(n); }
+function free(G,n,s){ return !cellsOf(G,n).some(x=>x[0]===s); }
+function onlyActs(G,n,acts){ return cellsOf(G,n).every(x=>acts.includes(x[1])); }
+function notDay(G,n,d){ return !cellsOf(G,n).some(x=>x[0].startsWith(d)); }
+function matchSol(G,r,n){ const mine=cellsOf(G,n).map(x=>x.join('|')).sort(); const want=r.sol[n].map(x=>x.join('|')).sort(); return mine.length===want.length&&mine.every((x,i)=>x===want[i]); }
+
+/* =========================================================
+   SCORING
+   ========================================================= */
+function scoreSec(sec, okList){
+  const n=okList.filter(Boolean).length, wrong=okList.length-n;
+  let pts=0;
+  if(sec.mode==='minus') pts=Math.max(0, sec.max-wrong);
+  else if(sec.mode==='all') pts= wrong===0?sec.max:0;
+  else if(sec.mode==='count') pts=Math.min(sec.max,n);
+  else { for(const [min,p] of sec.bands){ if(n>=min){pts=p;break;} } }
+  return pts;
+}
+function secHTML(code,title,max,pts,items){
+  return `<div class="sec"><div class="sh"><span>${esc(code)}${code?' · ':''}${esc(title)}</span><span class="sc">${pts}/${max}</span></div>
+    <ul>${items.map(i=>`<li><span class="mark ${i.ok?'y':'n'}">${i.ok?'✓':'✗'}</span><span>${esc(i.l)}${!i.ok&&i.tip?`<span class="tip">Tip: ${esc(i.tip)}</span>`:''}</span></li>`).join('')}</ul></div>`;
+}
+function bandText(sec){
+  if(sec.mode==='minus') return `alle aspecten juist = ${sec.max}p, per fout −1`;
+  if(sec.mode==='count') return `per juist aspect 1p`;
+  if(sec.mode==='all') return `alle aspecten juist`;
+  return sec.bands.map(([m,p])=>`${m}+ juist = ${p}p`).join(' · ');
+}
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+function render(){
+  const app=$('#app');
+  app.innerHTML = topbar() + (view.screen==='home'? homeView() : caseView()) + footer();
+  bindTop();
+  if(view.screen==='home') bindHome(); else bindCase();
+}
+function topbar(){
+  return `<header class="topbar">
+    <div class="brand"><span class="eyebrow">SC Delfland · Zorg &amp; Welzijn · profielmodule Mens &amp; Activiteit</span><b>Oefenapp Mens &amp; Activiteit</b></div>
+    <div class="topctl">
+      ${S.name?`<span class="who">${esc(S.name)}${S.klas?' · '+esc(S.klas):''}</span>`:''}
+      <div class="seg" role="group" aria-label="Niveau">
+        <button data-level="bb" aria-pressed="${S.level==='bb'}">BB</button>
+        <button data-level="kb" aria-pressed="${S.level==='kb'}">KB</button>
+      </div>
+    </div>
+  </header>`;
+}
+function bindTop(){ $$('[data-level]').forEach(b=>b.onclick=()=>{S.level=b.dataset.level; save(); render();}); }
+function footer(){
+  return `<footer><p class="note">Oefenmateriaal in de opbouw van het profielvak-cspe Z&amp;W (onderdeel C, profielmodule 3 – mens en activiteit). De situaties zijn gebaseerd op de cspe’s van 2024–2026 en aangepast voor oefening op school. Dit is geen product van het CvTE en is niet door het CvTE goedgekeurd.</p></footer>`;
+}
+
+/* ---------- HOME ---------- */
+function caseProgress(c){
+  const r=S.results[c.id]||{};
+  return PARTS.map(([k,code])=>`<span class="chip ${r[k]?'done':''}">${code}${r[k]?' · '+r[k].score+'p':''}</span>`).join('');
+}
+function homeView(){
+  return `<section class="hero">
+    <div>
+      <span class="eyebrow">Oefenen voor het cspe</span>
+      <h1>Oefen Mens &amp; Activiteit zoals op het examen</h1>
+      <p class="lead">Elk oefenexamen is opgebouwd zoals onderdeel C van het echte cspe: zinnen uit een verslag beoordelen, een kostenoverzicht maken en de opdrachten in Facet: theorievragen, activiteitenkaarten invullen en een rooster maken. Na elke opdracht zie je meteen wat goed ging en wat beter kan.</p>
+      <div class="facts five" style="margin-top:18px">
+        <div class="fact"><b>2p</b><span class="small muted">C1 · verslag</span></div>
+        <div class="fact"><b>5p</b><span class="small muted">C2 · kosten</span></div>
+        <div class="fact"><b>8p</b><span class="small muted">C3 · vragen</span></div>
+        <div class="fact"><b>4p</b><span class="small muted">C3 · kaarten</span></div>
+        <div class="fact"><b>6p</b><span class="small muted">C3 · rooster</span></div>
+      </div>
+    </div>
+    <form class="card form" id="who" autocomplete="off">
+      <h3>Wie ben jij?</h3>
+      <label>Naam<input id="f-name" value="${esc(S.name)}" placeholder="Voornaam en achternaam"></label>
+      <label>Klas<input id="f-klas" value="${esc(S.klas)}" placeholder="Bijv. 4KB-ZW"></label>
+      <div class="form"><span style="font-weight:700;font-size:.92rem">Niveau</span>
+        <div class="seg" role="group" aria-label="Niveau kiezen">
+          <button type="button" data-level="bb" aria-pressed="${S.level==='bb'}">Basis (BB)</button>
+          <button type="button" data-level="kb" aria-pressed="${S.level==='kb'}">Kader (KB)</button>
+        </div>
+        <p class="small muted">${bb()?'Basis: eenvoudigere theorievragen, uitleg staat open, hulpknoppen bij het kostenoverzicht en een teller per persoon bij het rooster.':'Kader: theorievragen op examenniveau. De uitleg zit dicht en je krijgt pas tips na het nakijken.'}</p>
+      </div>
+      <button class="btn primary" type="submit">Opslaan</button>
+    </form>
+  </section>
+  <h2 style="margin-bottom:14px">Kies een oefenexamen</h2>
+  <div class="covers">
+    ${CASES.map(c=>`<button class="cover" data-case="${c.id}">
+      <div class="band"><span>Oefenexamen ${c.id}</span><small>${c.versie}</small></div>
+      <div class="body">
+        <span class="eyebrow">Onderdeel C · profielmodule 3 – mens en activiteit</span>
+        <span class="place">${esc(c.place)}</span>
+        <span class="meta">${esc(c.topics)}</span>
+        <span class="meta">${esc(c.stijl)} · richttijd 95 min · 25 punten</span>
+        <div class="prog">${caseProgress(c)}</div>
+      </div>
+    </button>`).join('')}
+  </div>`;
+}
+function bindHome(){
+  $('#who').onsubmit=(e)=>{e.preventDefault(); S.name=$('#f-name').value.trim(); S.klas=$('#f-klas').value.trim(); save(); render();};
+  $$('[data-case]').forEach(b=>b.onclick=()=>{ view={screen:'case',caseId:b.dataset.case,tab:'intro'}; runtime={}; render(); window.scrollTo(0,0); });
+}
+
+/* ---------- CASE ---------- */
+const TABS=[
+  {id:'intro', n:'i', l:'Inleiding'},
+  {id:'o1', n:'1', l:'Verslag'},
+  {id:'o2', n:'2', l:'Kosten'},
+  {id:'o3', n:'3a', l:'Vragen'},
+  {id:'o4', n:'3b', l:'Kaarten'},
+  {id:'o5', n:'3c', l:'Rooster'},
+  {id:'res', n:'Σ', l:'Uitslag'}
+];
+function caseView(){
+  const c=caseById(view.caseId), r=S.results[c.id]||{};
+  return `<div class="casegrid">
+    <nav class="rail" aria-label="Opdrachten">
+      <button class="btn ghost sm back" id="home">← Alle examens</button>
+      ${TABS.map(t=>`<button class="tab" data-tab="${t.id}" aria-current="${view.tab===t.id}"><span class="n">${t.n}</span><span>${t.l}</span>${MAX[t.id]?`<span class="p">${r[t.id]?r[t.id].score+'/'+MAX[t.id]:MAX[t.id]}p</span>`:'<span></span>'}</button>`).join('')}
+    </nav>
+    <main class="sheet" id="sheet">${tabContent(c)}</main>
+  </div>`;
+}
+function bindCase(){
+  $('#home').onclick=()=>{ view={screen:'home'}; render(); window.scrollTo(0,0); };
+  $$('[data-tab]').forEach(b=>b.onclick=()=>{ view.tab=b.dataset.tab; render(); window.scrollTo(0,0); });
+  const c=caseById(view.caseId);
+  ({intro:bindGo,o1:bindVerslag,o2:bindKosten,o3:bindQuiz,o4:bindKaarten,o5:bindRooster,res:bindRes})[view.tab](c);
+}
+function tabContent(c){
+  return ({intro:introView,o1:verslagView,o2:kostenView,o3:quizView,o4:kaartenView,o5:roosterView,res:resView})[view.tab](c);
+}
+function opdHead(nr,p){ return `<div class="marg"><span class="pt">${p}p</span><span class="nr">${nr}</span></div>`; }
+function bindGo(){ $$('[data-go]').forEach(b=>b.onclick=()=>{ view.tab=b.dataset.go; render(); window.scrollTo(0,0); }); }
+function nextBtn(next,label){ return `<button class="btn primary" data-go="${next}">${label}</button>`; }
+
+/* ---------- INTRO ---------- */
+function introView(c){
+  return `<div class="opd"><div class="marg"><span class="nr">i</span></div><div class="content">
+    <span class="eyebrow">Oefenexamen VMBO-${S.level.toUpperCase()} · ${c.versie} · onderdeel C · ${c.stijl}</span>
+    <h1>${esc(c.place)}</h1>
+    <p class="muted">De richttijd voor dit onderdeel is 95 minuten. Je kunt maximaal 25 punten behalen. Voor elk opdrachtnummer staat hoeveel punten je kunt halen.</p>
+    <div class="boekje"><h3>Inleiding</h3><p>${esc(c.intro)}</p><p><b>Jij loopt stage bij ${esc(c.place)}.</b></p></div>
+    <div><h3 style="margin-bottom:8px">Opdrachten onderdeel C</h3>
+      <ol style="margin:0;padding-left:22px;display:grid;gap:4px">
+        <li>Zinnen uit een verslag beoordelen — 2p</li>
+        <li>Een kostenoverzicht maken — 5p</li>
+        <li>Vragen en opdrachten maken in Facet — 18p
+          <ul style="margin:4px 0 0;padding-left:18px"><li>3a theorievragen — 8p</li><li>3b activiteiten beoordelen — 4p</li><li>3c ${esc(c.rooster.title.toLowerCase())} — 6p</li></ul></li>
+      </ol></div>
+    <p class="small muted">Je mag de opdrachten in elke volgorde maken. Gebruik bij opdracht 2 gerust de rekenmachine van je Chromebook, of typ je berekening in de kolom ‘berekening’: de app rekent mee.</p>
+    <div class="row">${nextBtn('o1','Begin met opdracht 1')}</div>
+    <details class="docent"><summary>Voor de docent: zo kijkt de app na</summary>
+      <div class="crit">
+        <div><b>C1 verslag</b> <span class="muted small">(${c.verslag.bands.map(([m,p])=>`${m}+ juist = ${p}p`).join(' · ')})</span></div>
+        <div><b>C2 kostenoverzicht</b> <span class="muted small">(${bandText(c.kosten.score)} · doorrekenfouten worden niet opnieuw aangerekend · de kolom ‘berekening’ telt niet mee)</span>
+          <ul>${c.kosten.aspects.map(a=>`<li>${esc(a.l)}</li>`).join('')}</ul></div>
+        <div><b>C3a theorievragen</b> <span class="muted small">(8 vragen, 1p per vraag; BB en KB hebben een eigen set)</span></div>
+        <div><b>C3b activiteiten beoordelen</b> <span class="muted small">(${c.kaarten.deel1.length+c.kaarten.deel2.length} kaarten; een kaart is goed als alles op de kaart goed is; punten naar verhouding, max 4)</span></div>
+        ${c.rooster.secs.map(s=>`<div><b>C3c ${esc(s.title)}</b> <span class="muted small">(max ${s.max}p · ${bandText(s)})</span><ul>${s.items.map(i=>`<li>${esc(i.l)}</li>`).join('')}</ul></div>`).join('')}
+        <p class="small muted">Gebruik de uitslag als oefening, niet als officieel cijfer. In het echte cspe telt C3 in totaal 18 punten; de verdeling over 3a/3b/3c is hier een benadering.</p>
+      </div>
+    </details>
+  </div></div>`;
+}
+
+/* =========================================================
+   C1 — ZINNEN UIT EEN VERSLAG BEOORDELEN
+   ========================================================= */
+function verslagScore(c,ans){ const n=c.verslag.zinnen.filter((z,i)=>ans[i]===z.a).length; let p=0; for(const [m,pt] of c.verslag.bands){ if(n>=m){p=pt;break;} } return {n,p}; }
+function verslagView(c){
+  const V=c.verslag, rt=runtime.vs ||= {ans:[], done:false};
+  const saved=R(c.id).o1;
+  if(!rt.done && !rt.retry && saved && saved.ans){ rt.ans=saved.ans.slice(); rt.done=true; }
+  const review=rt.done, sc=review?verslagScore(c,rt.ans):null;
+  const complete=V.zinnen.every((_,i)=>rt.ans[i]!==undefined);
+  return `<div class="opd">${opdHead(1,2)}<div class="content">
+    <h2>Zinnen uit een verslag beoordelen</h2>
+    <div class="boekje"><p>${esc(V.text)}</p><p><b>Kruis bij elke zin uit het verslag aan of deze objectief of subjectief is.</b></p></div>
+    <details class="help" ${bb()?'open':''}><summary>Uitleg: objectief of subjectief?</summary><div>${UITLEG_OS}</div></details>
+    ${review?`<div class="total"><b>${sc.p}</b><span>van 2 punten · ${sc.n} van ${V.zinnen.length} zinnen goed</span></div>`:''}
+    <div class="tablewrap"><table class="mx vs"><thead><tr><th></th><th>zin</th><th>objectief</th><th>subjectief</th></tr></thead><tbody>
+      ${V.zinnen.map((z,i)=>`<tr class="${review?(rt.ans[i]===z.a?'right':'wrong'):''}"><td>${i+1}</td><td>${esc(z.s)}${review&&rt.ans[i]!==z.a?`<span class="why">${esc(z.e)}</span>`:''}${review&&rt.ans[i]===z.a&&!bb()?'':''}</td>
+        ${[0,1].map(j=>`<td class="c"><input type="radio" name="vs${i}" data-vs="${i}:${j}" aria-label="zin ${i+1}: ${j?'subjectief':'objectief'}" ${rt.ans[i]===j?'checked':''} ${review?'disabled':''}>${review&&j===z.a?'<span class="ok">✓</span>':''}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div>
+    ${review?`<p class="small muted">Puntentelling: ${V.bands.map(([m,p])=>`${m} of meer goed = ${p}p`).join(' · ')}.</p>
+      <div class="row"><button class="btn ghost" id="vs-retry">Opnieuw maken</button>${nextBtn('o2','Naar opdracht 2')}</div>`
+    :`<div class="row"><button class="btn primary" id="vs-done" ${complete?'':'disabled'}>Inleveren en nakijken</button><span class="small muted">${complete?'':'Beoordeel eerst alle zinnen.'}</span></div>`}
+  </div></div>`;
+}
+function bindVerslag(c){
+  bindGo(); const rt=runtime.vs;
+  $$('[data-vs]').forEach(b=>b.onchange=()=>{ const [i,j]=b.dataset.vs.split(':').map(Number); rt.ans[i]=j; const ok=c.verslag.zinnen.every((_,k)=>rt.ans[k]!==undefined); const d=$('#vs-done'); if(d){ d.disabled=!ok; d.nextElementSibling.textContent=ok?'':'Beoordeel eerst alle zinnen.'; } });
+  const d=$('#vs-done'); if(d) d.onclick=()=>{ rt.done=true; rt.retry=false; const sc=verslagScore(c,rt.ans); R(c.id).o1={score:sc.p, n:sc.n, ans:rt.ans.slice()}; save(); render(); window.scrollTo(0,0); };
+  const r=$('#vs-retry'); if(r) r.onclick=()=>{ runtime.vs={ans:[],done:false,retry:true}; render(); };
+}
+
+/* =========================================================
+   C2 — KOSTENOVERZICHT
+   ========================================================= */
+function kLines(c){ return c.kosten.secs.flatMap(s=>s.lines); }
+function kValues(c,st){
+  const v={}, z={};
+  kLines(c).forEach(l=>{ v[l.id]=parseNum(st.p[l.id]); z[l.id]=isFinite(v[l.id])?v[l.id]:0; });
+  return {v,z};
+}
+function kCorrect(c){ const cv={}; kLines(c).forEach(l=>{ cv[l.id]= l.ans!==undefined? l.ans : r2(l.f(cv)); }); return cv; }
+function kFieldOk(c,l,st,vals){
+  const v=vals.v[l.id];
+  let ok;
+  if(l.ans!==undefined) ok=approx(v,l.ans);
+  else { const exp=r2(l.f(vals.z)); ok = exp===0 ? (l.id==='kort' && (!isFinite(v)||v===0)) : approx(v,exp); }
+  if(l.pick && st.pick[l.id]!==l.pick.a) ok=false;
+  return ok;
+}
+function kAantalOk(l,st){ return l.aantal===undefined || approx(parseNum(st.a[l.id]), l.aantal) || (l.id==='elast' && !String(st.a[l.id]||'').trim()); }
+function kConclOk(c,st,vals){
+  const K=c.kosten, last=kLines(c).slice(-1)[0].id; const tot=vals.v[last]; if(!isFinite(tot)||!tot) return false;
+  const diff=r2(K.concl.budget-tot); const want=diff>=0?'ja':'nee';
+  return st.concl===want && approx(parseNum(st.amt), Math.abs(diff));
+}
+function kScore(c,st){
+  const K=c.kosten, vals=kValues(c,st), byId=Object.fromEntries(kLines(c).map(l=>[l.id,l]));
+  const items=K.aspects.map(a=>{
+    let ok = a.concl ? kConclOk(c,st,vals) : a.ids.every(id=>kFieldOk(c,byId[id],st,vals) && (!a.aantal||!K.aantalIn||kAantalOk(byId[id],st)));
+    return {l:a.l, ok, tip: ok?'':kTip(c,a,byId)};
+  });
+  return {items, pts:scoreSec(K.score, items.map(i=>i.ok))};
+}
+function kTip(c,a,byId){ if(a.concl) return 'Trek de totale kosten af van het beschikbare bedrag. Is het antwoord negatief? Dan is er een tekort.'; const l=byId[a.ids.find(id=>byId[id].hint)]; return l?l.hint:''; }
+function kostenView(c){
+  const K=c.kosten;
+  const rt=runtime.ks ||= (()=>{ const s=R(c.id).o2; return s&&s.st? {...JSON.parse(JSON.stringify(s.st)), done:true} : {p:{},a:{},b:{},pick:{},concl:'',amt:'',calcLine:'',done:false,hint:{}}; })();
+  const vals=kValues(c,rt), review=rt.done, sc=review?kScore(c,rt):null;
+  const fcls=(l)=> review? (kFieldOk(c,l,rt,vals)?'right':'wrong') : '';
+  const acls=(l)=> review&&K.aantalIn&&l.aantal!==undefined? (kAantalOk(l,rt)?'right':'wrong') : '';
+  const row=(l)=>{
+    const calc=calcExpr(rt.b[l.id]);
+    return `<tr class="${l.f?'tot':''}">
+      <td class="a">${K.aantalIn&&!l.f?`<input class="num ${acls(l)}" data-ka="${l.id}" value="${esc(rt.a[l.id]||'')}" aria-label="aantal ${esc(l.l)}" inputmode="decimal" ${review?'disabled':''}>`:(!l.f&&!K.aantalIn?`<input class="num" data-ka="${l.id}" value="${esc(rt.a[l.id]||'')}" aria-label="aantal ${esc(l.l)}" inputmode="decimal" ${review?'disabled':''}>`:'')}</td>
+      <td><div class="prod"><span>${esc(l.l)}${bb()&&l.hint&&!review?`<button class="hq" data-kh="${l.id}" aria-label="hulp bij ${esc(l.l)}" aria-expanded="${!!rt.hint[l.id]}">?</button>`:''}</span>
+        ${l.pick?`<select data-kp="${l.id}" class="${review?(rt.pick[l.id]===l.pick.a?'right':'wrong'):''}" ${review?'disabled':''} aria-label="${esc(l.pick.label||'welke workshop')}"><option value="">${esc(l.pick.label||'welke workshop')}?</option>${l.pick.o.map(o=>`<option ${rt.pick[l.id]===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`:''}
+        ${rt.hint[l.id]&&bb()&&!review?`<span class="hint">${esc(l.hint)}</span>`:''}</div></td>
+      <td class="b">${l.f&&!l.calc?'':`<input data-kb="${l.id}" value="${esc(rt.b[l.id]||'')}" placeholder="${l.f?'':'bijv. 12 x 4,00'}" aria-label="berekening ${esc(l.l)}" ${review?'disabled':''}>
+        <div class="calcres" id="cr-${l.id}">${isFinite(calc)?`= ${eur(calc)} <button data-kc="${l.id}" ${review?'disabled':''}>→ prijs</button>`:''}</div>`}</td>
+      <td class="p"><div class="eur">€<input class="num ${fcls(l)}" data-kv="${l.id}" value="${esc(rt.p[l.id]||'')}" aria-label="prijs ${esc(l.l)}" inputmode="decimal" ${review?'disabled':''}></div></td>
+    </tr>`;
+  };
+  const cv=kCorrect(c);
+  return `<div class="opd">${opdHead(2,5)}<div class="content">
+    <h2>Een kostenoverzicht maken</h2>
+    <div class="kgrid">
+        <div class="boekje"><p>${esc(K.text)}</p>
+          <h3>Informatie voor de berekening</h3><ul>${K.facts.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
+          <h3>Uitvoering</h3><ul>${K.uitvoering.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div>
+        <aside class="kinfo card" aria-label="Prijslijsten">${K.info}</aside>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+        ${review?`<div class="total"><b>${sc.pts}</b><span>van 5 punten</span></div>${secHTML('C2',K.title,5,sc.pts,sc.items)}`:''}
+        <div class="tablewrap">
+          <h3 style="margin-bottom:6px">${esc(K.title)}</h3>
+          ${K.secs.map(s=>`<table class="ktab"><caption>${esc(s.h)}</caption><thead><tr><th>aantal</th><th>product</th><th>(berekening)</th><th>prijs in €</th></tr></thead><tbody>${s.lines.map(row).join('')}</tbody></table>`).join('')}
+        </div>
+        <div class="concl">
+          <p><b>${esc(K.concl.q)}</b> Kies de juiste optie en vul het bedrag in.</p>
+          ${K.concl.calcLine?`<label style="display:grid;gap:4px">Noteer je berekening<input data-kcl value="${esc(rt.calcLine||'')}" ${review?'disabled':''}></label>`:''}
+          <label><input type="radio" name="kcon" value="ja" ${rt.concl==='ja'?'checked':''} ${review?'disabled':''}> ${esc(K.concl.ja)}</label>
+          <label><input type="radio" name="kcon" value="nee" ${rt.concl==='nee'?'checked':''} ${review?'disabled':''}> ${esc(K.concl.nee)}</label>
+          <label>bedrag: € <input class="num amt ${review?(kConclOk(c,rt,vals)?'right':'wrong'):''}" data-kamt value="${esc(rt.amt||'')}" inputmode="decimal" aria-label="bedrag bij de conclusie" ${review?'disabled':''}></label>
+        </div>
+        ${review?`<details class="help"><summary>Bekijk de voorbeelduitwerking</summary><div>
+            <div class="tablewrap"><table class="qtab vbu"><thead><tr><th>product</th><th>berekening</th><th>prijs in €</th></tr></thead><tbody>
+            ${kLines(c).map(l=>`<tr><td>${l.aantal!==undefined?l.aantal+' · ':''}${esc(l.l)}${l.pick?' ('+esc(l.pick.a)+')':''}</td><td>${esc(l.calc||'')}</td><td class="num">${eur(cv[l.id])}</td></tr>`).join('')}
+            </tbody></table></div>
+            <p><b>Conclusie:</b> ${(()=>{ const t=cv[kLines(c).slice(-1)[0].id], d=r2(K.concl.budget-t); return d>=0? esc(K.concl.ja)+' '+eur(d) : esc(K.concl.nee)+' '+eur(-d); })()}</p>
+            <p class="small muted">Rekende je ergens verkeerd? Dan rekent de app daarna met jouw getal door (doorrekenfout). Je verliest dan maar één keer punten.</p></div></details>
+          <div class="row"><button class="btn ghost" id="k-retry">Opnieuw maken</button><button class="btn ghost" id="k-edit">Verbeteren</button>${nextBtn('o3','Naar opdracht 3a')}</div>`
+        :`<div class="row"><button class="btn primary" id="k-done">Inleveren en nakijken</button></div>`}
+    </div>
+  </div></div>`;
+}
+function bindKosten(c){
+  bindGo(); const rt=runtime.ks;
+  $$('[data-kv]').forEach(i=>i.oninput=()=>{ rt.p[i.dataset.kv]=i.value; });
+  $$('[data-ka]').forEach(i=>i.oninput=()=>{ rt.a[i.dataset.ka]=i.value; });
+  $$('[data-kp]').forEach(i=>i.onchange=()=>{ rt.pick[i.dataset.kp]=i.value; });
+  $$('[data-kb]').forEach(i=>i.oninput=()=>{ rt.b[i.dataset.kb]=i.value; const v=calcExpr(i.value); const box=$('#cr-'+i.dataset.kb); box.innerHTML=isFinite(v)?`= ${eur(v)} <button data-kc="${i.dataset.kb}">→ prijs</button>`:''; bindCopy(); });
+  const bindCopy=()=>$$('[data-kc]').forEach(b=>b.onclick=()=>{ const id=b.dataset.kc; const v=calcExpr(rt.b[id]); if(isFinite(v)){ rt.p[id]=eur(r2(v)); const inp=$(`[data-kv="${id}"]`); if(inp) inp.value=rt.p[id]; } });
+  bindCopy();
+  $$('[data-kh]').forEach(b=>b.onclick=()=>{ rt.hint[b.dataset.kh]=!rt.hint[b.dataset.kh]; const y=window.scrollY; render(); window.scrollTo(0,y); });
+  $$('input[name="kcon"]').forEach(i=>i.onchange=()=>{ rt.concl=i.value; });
+  const am=$('[data-kamt]'); if(am) am.oninput=()=>{ rt.amt=am.value; };
+  const cl=$('[data-kcl]'); if(cl) cl.oninput=()=>{ rt.calcLine=cl.value; };
+  const d=$('#k-done'); if(d) d.onclick=()=>{ rt.done=true; const sc=kScore(c,rt); const st=JSON.parse(JSON.stringify({p:rt.p,a:rt.a,b:rt.b,pick:rt.pick,concl:rt.concl,amt:rt.amt,calcLine:rt.calcLine,hint:{}})); R(c.id).o2={score:sc.pts, st, ok:sc.items.map(i=>i.ok)}; save(); render(); window.scrollTo(0,0); };
+  const r=$('#k-retry'); if(r) r.onclick=()=>{ runtime.ks={p:{},a:{},b:{},pick:{},concl:'',amt:'',calcLine:'',done:false,hint:{}}; delete R(c.id).o2; save(); render(); window.scrollTo(0,0); };
+  const e=$('#k-edit'); if(e) e.onclick=()=>{ rt.done=false; render(); };
+}
+
+/* =========================================================
+   C3a — THEORIEVRAGEN ZOALS IN FACET
+   ========================================================= */
+function prepQ(q){
+  if(q.t==='mc') return shufQ(q);
+  if(q.t==='matrix') return {...q, rows:shuffle(q.rows)};
+  if(q.t==='match') return {...q, items:shuffle(q.items)};
+  return q;
+}
+function qRight(q,ans){
+  if(ans===undefined) return false;
+  if(q.t==='mc') return ans===q.a;
+  if(q.t==='matrix') return q.rows.every((r,i)=>ans[i]===r.a);
+  if(q.t==='match') return q.items.every((it,i)=>ans[i]===it.a);
+  return false;
+}
+function qComplete(q,ans){
+  if(ans===undefined) return false;
+  if(q.t==='mc') return true;
+  const n=q.t==='matrix'?q.rows.length:q.items.length;
+  return Array.isArray(ans) && ans.length===n && ans.every(v=>v!==undefined&&v!==null);
+}
+function qBody(q,ans,review,k=0){
+  let h=(q.ctx?`<p>${esc(q.ctx)}</p>`:'')+`<p class="qq">${esc(q.q)}</p>`;
+  if(q.t==='mc'){
+    h+=`<div class="mcl">${q.o.map((o,j)=>{const cls=review?(j===q.a?'right':(j===ans?'wrong':'')):''; return `<label class="mco ${cls}"><input type="radio" name="mc${k}" data-mc="${j}" ${ans===j?'checked':''} ${review?'disabled':''}><span>${esc(o)}</span></label>`;}).join('')}</div>`;
+  } else if(q.t==='matrix'){
+    h+=`<div class="tablewrap"><table class="mx"><thead><tr><th></th>${q.cols.map(cn=>`<th>${esc(cn)}</th>`).join('')}</tr></thead><tbody>${q.rows.map((r,i)=>`<tr class="${review?(ans&&ans[i]===r.a?'right':'wrong'):''}"><td>${esc(r.s)}</td>${q.cols.map((_,j)=>`<td class="c"><input type="radio" name="mx${k}_${i}" data-mx="${i}:${j}" aria-label="${esc(r.s)}: ${esc(q.cols[j])}" ${ans&&ans[i]===j?'checked':''} ${review?'disabled':''}>${review&&j===r.a?'<span class="ok">✓</span>':''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  } else if(q.t==='match'){
+    h+=`<div class="mt">${q.items.map((it,i)=>`<div class="mtr ${review?(ans&&ans[i]===it.a?'right':'wrong'):''}"><b>${esc(it.l)}</b><select data-mt="${i}" aria-label="${esc(it.l)}" ${review?'disabled':''}><option value="">kies …</option>${q.o.map((o,j)=>`<option value="${j}" ${ans&&ans[i]===j?'selected':''}>${esc(o)}</option>`).join('')}</select>${review&&!(ans&&ans[i]===it.a)?`<span class="tip">Goed: ${esc(q.o[it.a])}</span>`:''}</div>`).join('')}</div>`;
+  }
+  return h;
+}
+function quizView(c){
+  if(runtime.quiz && runtime.quiz.lv!==S.level) runtime.quiz=null;
+  const set=()=>bb()?c.quizBB:c.quizKB;
+  const rt = runtime.quiz ||= {i:0, ans:[], done:false, lv:S.level, set:set().map(prepQ)};
+  const r=R(c.id).o3;
+  if(rt.done || (r && r.set && r.lv===S.level && !rt.retry && rt.ans.length===0)){
+    const ans = rt.done? rt.ans : r.ans; const st = rt.done? rt.set : r.set;
+    const score = st.filter((q,i)=>qRight(q,ans[i])).length;
+    return `<div class="opd">${opdHead('3a',8)}<div class="content">
+      <h2>Theorievragen — uitslag</h2>
+      <div class="total"><b>${score}</b><span>van ${st.length} punten</span></div>
+      ${st.map((q,i)=>`<div class="q card"><div class="qhead"><span class="eyebrow">Vraag ${i+1} · 1p</span><span class="chip ${qRight(q,ans[i])?'done':'bad'}">${qRight(q,ans[i])?'goed':'fout'}</span></div>${qBody(q,ans[i],true,i)}<p class="expl">${esc(q.e)}</p></div>`).join('')}
+      <p class="small muted">Net als in Facet krijg je bij een vraag met meer regels alleen het punt als alle regels goed zijn.</p>
+      <div class="row"><button class="btn ghost" id="q-retry">Opnieuw maken</button>${nextBtn('o4','Naar opdracht 3b')}</div>
+    </div></div>`;
+  }
+  const q=rt.set[rt.i], a=rt.ans[rt.i];
+  return `<div class="opd">${opdHead('3a',8)}<div class="content">
+    <h2>Vragen maken in Facet</h2>
+    ${rt.i===0?`<div class="boekje"><p>Maak de theorievragen. Bij elke vraag kun je 1 punt halen.</p></div>`:''}
+    <div class="q card facet">
+      <div class="qhead"><span class="eyebrow">Vraag ${rt.i+1} van ${rt.set.length} · 1p</span><span class="dots">${rt.set.map((_,i)=>`<i class="${i<=rt.i?'on':''}"></i>`).join('')}</span></div>
+      ${qBody(q,a,false,rt.i)}
+      <div class="row" style="justify-content:space-between">
+        <button class="btn ghost sm" id="q-prev" ${rt.i===0?'disabled':''}>Vorige</button>
+        <button class="btn primary" id="q-next" ${qComplete(q,a)?'':'disabled'}>${rt.i===rt.set.length-1?'Inleveren':'Volgende'}</button>
+      </div>
+    </div>
+  </div></div>`;
+}
+function bindQuiz(c){
+  const rt=runtime.quiz; bindGo();
+  const q=rt.set&&rt.set[rt.i];
+  const upd=()=>{ const n=$('#q-next'); if(n) n.disabled=!qComplete(q,rt.ans[rt.i]); };
+  $$('[data-mc]').forEach(b=>b.onchange=()=>{ rt.ans[rt.i]=+b.dataset.mc; upd(); });
+  $$('[data-mx]').forEach(b=>b.onchange=()=>{ const [i,j]=b.dataset.mx.split(':').map(Number); const arr=(rt.ans[rt.i] ||= Array(q.rows.length).fill(undefined)); arr[i]=j; upd(); });
+  $$('[data-mt]').forEach(b=>b.onchange=()=>{ const i=+b.dataset.mt; const arr=(rt.ans[rt.i] ||= Array(q.items.length).fill(undefined)); arr[i]=b.value===''?undefined:+b.value; upd(); });
+  const n=$('#q-next'); if(n) n.onclick=()=>{ if(rt.i<rt.set.length-1){rt.i++; render();} else { rt.done=true; const score=rt.set.filter((qq,i)=>qRight(qq,rt.ans[i])).length; R(c.id).o3={score,ans:rt.ans.slice(),set:rt.set,lv:S.level}; save(); render(); window.scrollTo(0,0);} };
+  const p=$('#q-prev'); if(p) p.onclick=()=>{rt.i--; render();};
+  const rr=$('#q-retry'); if(rr) rr.onclick=()=>{ runtime.quiz={i:0,ans:[],done:false,retry:true,lv:S.level,set:shuffle(bb()?c.quizBB:c.quizKB).map(prepQ)}; render(); };
+}
+
+/* =========================================================
+   C3b — ACTIVITEITEN BEOORDELEN (kaartenbak)
+   ========================================================= */
+const kOpts=(K,card)=>card.opts||K.ontw;
+function card1Ok(card,a){ if(!a) return false; const sel=(a.k||[]).slice().sort().join(); return sel===card.a.slice().sort().join() && (card.dg===undefined || a.dg===card.dg); }
+function card2Ok(card,a){ if(!a) return false; return !!a.g1===card.a[0] && !!a.g2===card.a[1] && !!a.no===(!card.a[0]&&!card.a[1]) && (a.g1||a.g2||a.no); }
+function kaartScore(c,st){
+  const K=c.kaarten; const ok=[...K.deel1.map((cd,i)=>card1Ok(cd,st.d1[i])), ...K.deel2.map((cd,i)=>card2Ok(cd,st.d2[i]))];
+  const n=ok.filter(Boolean).length, tot=ok.length, ratio=n/tot;
+  const pts= ratio>=1?4: ratio>=.75?3: ratio>=.5?2: ratio>=.25?1:0;
+  return {n,tot,pts,ok};
+}
+function kaartenView(c){
+  const K=c.kaarten;
+  const rt=runtime.kt ||= (()=>{ const s=R(c.id).o4; return s&&s.st? {...JSON.parse(JSON.stringify(s.st)), step:3} : {d1:[],d2:[],step:1}; })();
+  const review=rt.step===3, sc=review?kaartScore(c,rt):null;
+  const meta=(cd)=>`<p class="kmeta">aantal deelnemers: ${esc(cd.n)} · tijdsduur: ${esc(cd.tijd)}</p>`;
+  const d1=(cd,i)=>{
+    const a=rt.d1[i]||{}, lock=rt.step!==1, opts=kOpts(K,cd);
+    return `<article class="kaart ${review?(card1Ok(cd,a)?'ok':'nok'):''}"><div class="kh"><b>${esc(cd.t)}</b><span>kaart ${i+1}</span></div><div class="kb">
+      <p>${esc(cd.d)}</p>${meta(cd)}
+      ${cd.dg!==undefined?`<p class="kq">Doelgroep</p>${K.doelgroepen.map((g,j)=>{ const cls=review?(j===cd.dg?(a.dg===j?'right':'miss'):(a.dg===j?'wrong':'')):''; return `<label class="ck ${cls}"><input type="radio" name="dg${i}" data-dg="${i}:${j}" ${a.dg===j?'checked':''} ${lock?'disabled':''}>${esc(g)}</label>`; }).join('')}`:''}
+      <p class="kq">${cd.dg!==undefined?'Deze activiteit stimuleert vooral de …':'Deze activiteit'}</p>
+      ${opts.map((o,j)=>{ const on=(a.k||[]).includes(j), right=cd.a.includes(j); const cls=review?(on&&right?'right':on&&!right?'wrong':!on&&right?'miss':''):''; return `<label class="ck ${cls}"><input type="checkbox" data-k1="${i}:${j}" ${on?'checked':''} ${lock?'disabled':''}>${esc(o)}</label>`; }).join('')}
+      ${review&&!card1Ok(cd,a)?`<p class="kf">${esc(cd.e)}</p>`:''}
+    </div></article>`;
+  };
+  const d2=(cd,i)=>{
+    const a=rt.d2[i]||{}, lock=rt.step!==2;
+    const box=(k,l,want)=>{ const on=!!a[k]; const cls=review?(on&&want?'right':on&&!want?'wrong':!on&&want?'miss':''):''; return `<label class="ck ${cls}"><input type="checkbox" data-k2="${i}:${k}" ${on?'checked':''} ${lock?'disabled':''}>${esc(l)}</label>`; };
+    return `<article class="kaart ${review?(card2Ok(cd,a)?'ok':'nok'):''}"><div class="kh"><b>${esc(cd.t)}</b><span>kaart ${K.deel1.length+i+1}</span></div><div class="kb">
+      <p>${esc(cd.d)}</p>${meta(cd)}
+      <p class="kq">Deze activiteit</p>${cd.kenm.map(k=>`<span class="fixed">${esc(k)}</span>`).join('')}
+      <p class="kq">Geschikt?</p>
+      ${box('g1','is geschikt voor groep 1',cd.a[0])}${box('g2','is geschikt voor groep 2',cd.a[1])}${box('no','is ongeschikt voor deze groepen',!cd.a[0]&&!cd.a[1])}
+      ${review&&!card2Ok(cd,a)?`<p class="kf">${esc(cd.e)}</p>`:''}
+    </div></article>`;
+  };
+  const d1done=K.deel1.every((cd,i)=>{ const a=rt.d1[i]; return a&&(a.k||[]).length&&(cd.dg===undefined||a.dg!==undefined); });
+  const d2done=K.deel2.every((cd,i)=>{ const a=rt.d2[i]; return a&&(a.g1||a.g2||a.no); });
+  return `<div class="opd">${opdHead('3b',4)}<div class="content">
+    <h2>Activiteiten beoordelen</h2>
+    <div class="boekje"><p>${esc(K.text)}</p>
+      <p><b>Deel 1:</b> vul de ${K.deel1.length} kaarten voor de kaartenbak in. ${K.deel1[0].dg!==undefined?'Klik de juiste doelgroep en de juiste ontwikkelingen aan.':'Zet een vinkje bij alle juiste kenmerken.'}<br>
+      <b>Deel 2:</b> je ziet ${K.deel2.length} juist ingevulde kaarten. Lees de informatie over de twee groepen en vul in of de activiteit geschikt of ongeschikt is voor de groep(en).</p></div>
+    <details class="help" ${bb()?'open':''}><summary>Uitleg: wat stimuleert een activiteit?</summary><div>${UITLEG_KENM}${K.doelgroepInfo||''}</div></details>
+    ${review?`<div class="total"><b>${sc.pts}</b><span>van 4 punten · ${sc.n} van ${sc.tot} kaarten helemaal goed</span></div><p class="small muted">Groen = goed aangeklikt · rood = had je niet moeten aanklikken · gestippeld = had je wel moeten aanklikken.</p>`:''}
+    <h3>Deel 1</h3>
+    <div class="kaarten">${K.deel1.map(d1).join('')}</div>
+    ${rt.step===1?`<div class="row"><button class="btn primary" id="kt-next" ${d1done?'':'disabled'}>Volgend onderdeel</button><span class="small muted">Let op: je kunt daarna niet meer terug naar deel 1.</span></div>`:''}
+    ${rt.step>=2?`<h3>Deel 2</h3>
+      <div class="groepen">${K.groepen.map(g=>`<div class="groep"><b>${esc(g.n)}</b><p>${esc(g.d)}</p></div>`).join('')}</div>
+      <div class="kaarten">${K.deel2.map(d2).join('')}</div>`:''}
+    ${rt.step===2?`<div class="row"><button class="btn primary" id="kt-done" ${d2done?'':'disabled'}>Inleveren en nakijken</button></div>`:''}
+    ${review?`<div class="row"><button class="btn ghost" id="kt-retry">Opnieuw maken</button>${nextBtn('o5','Naar opdracht 3c')}</div>`:''}
+  </div></div>`;
+}
+function bindKaarten(c){
+  bindGo(); const rt=runtime.kt, K=c.kaarten;
+  const keep=()=>{ const y=window.scrollY; render(); window.scrollTo(0,y); };
+  $$('[data-k1]').forEach(b=>b.onchange=()=>{ const [i,j]=b.dataset.k1.split(':').map(Number); const a=(rt.d1[i] ||= {k:[]}); a.k ||= []; a.k = b.checked? [...new Set([...a.k,j])] : a.k.filter(x=>x!==j); keep(); });
+  $$('[data-dg]').forEach(b=>b.onchange=()=>{ const [i,j]=b.dataset.dg.split(':').map(Number); const a=(rt.d1[i] ||= {k:[]}); a.dg=j; keep(); });
+  $$('[data-k2]').forEach(b=>b.onchange=()=>{ const [i,k]=b.dataset.k2.split(':'); const a=(rt.d2[+i] ||= {}); a[k]=b.checked; if(k==='no'&&b.checked){a.g1=false;a.g2=false;} if(k!=='no'&&b.checked) a.no=false; keep(); });
+  const n=$('#kt-next'); if(n) n.onclick=()=>{ rt.step=2; keep(); };
+  const d=$('#kt-done'); if(d) d.onclick=()=>{ rt.step=3; const sc=kaartScore(c,rt); R(c.id).o4={score:sc.pts, n:sc.n, tot:sc.tot, st:JSON.parse(JSON.stringify({d1:rt.d1,d2:rt.d2}))}; save(); render(); window.scrollTo(0,0); };
+  const r=$('#kt-retry'); if(r) r.onclick=()=>{ runtime.kt={d1:[],d2:[],step:1}; delete R(c.id).o4; save(); render(); window.scrollTo(0,0); };
+}
+
+/* =========================================================
+   C3c — ROOSTER INVULLEN
+   ========================================================= */
+function rScore(c,G){
+  return c.rooster.secs.map(s=>{ const items=s.items.map(i=>({l:i.l, tip:i.tip, ok:!!i.ok(G)})); return {code:s.code,title:s.title,max:s.max,pts:scoreSec(s,items.map(i=>i.ok)),items}; });
+}
+function rWarnings(c,G){
+  const RO=c.rooster, w=[];
+  RO.people.forEach(p=>{ const slots={}; cellsOf(G,p.n).forEach(([s])=>{ slots[s]=(slots[s]||0)+1; }); Object.entries(slots).forEach(([s,k])=>{ if(k>1) w.push(`${p.n} staat ${RO.slots.find(x=>x.id===s).l} ${RO.slots.find(x=>x.id===s).sub} op twee plekken tegelijk.`); }); });
+  RO.slots.forEach(s=>RO.acts.forEach(a=>{ if(RO.closed&&RO.closed(s.id,a.id)) return; const n=cell(G,s.id,a.id).length; if(n>RO.max) w.push(`${a.l}, ${s.l} ${s.sub}: meer dan ${RO.max} ${c.id==='A'?'vrijwilligers':c.id==='B'?'cliënten':'medewerkers'}.`); }));
+  return w;
+}
+function roosterView(c){
+  const RO=c.rooster;
+  const rt=runtime.ro ||= (()=>{ const s=R(c.id).o5; return s&&s.G? {G:JSON.parse(JSON.stringify(s.G)), sel:null, done:true} : {G:{}, sel:RO.people[0].n, done:false}; })();
+  const G=rt.G, review=rt.done, res=review?rScore(c,G):null, tot=res?res.reduce((a,s)=>a+s.pts,0):0;
+  const warns=rWarnings(c,G);
+  const grid=(GG,isSol)=>`<div class="rscroll"><table class="rtab ${isSol?'sol':''}"><thead><tr><th class="slot">${c.id==='A'?'ronde':'dag / dagdeel'}</th>${RO.acts.map(a=>`<th>${esc(a.l)}</th>`).join('')}</tr></thead><tbody>
+    ${RO.slots.map(s=>`<tr><th class="slot">${esc(s.l)}<small>${esc(s.sub)}</small></th>${RO.acts.map(a=>{
+      if(RO.closed&&RO.closed(s.id,a.id)) return `<td class="closed">${esc(RO.closedL||'')}</td>`;
+      const names=cell(GG,s.id,a.id), info=RO.info?RO.info(s.id,a.id):'';
+      const bad=!isSol && names.length>RO.max;
+      return `<td class="cell ${bad?'bad':''}" ${isSol||review?'':`tabindex="0" role="button" aria-label="${esc(a.l)}, ${esc(s.l)} ${esc(s.sub)}: ${names.length?esc(names.join(', ')):'leeg'}. ${rt.sel?'Plaats '+esc(rt.sel):''}"`} data-cell="${s.id}|${a.id}">${info?`<span class="ci">${esc(info)}</span>`:''}${names.map(n=>{ const cls=(review&&!isSol&&RO.sol[n]&&c.id!=='C')?(RO.sol[n].some(x=>x[0]===s.id&&x[1]===a.id)?'right':'wrong'):''; return isSol||review?`<span class="nm ${cls}">${esc(n)}</span>`:`<button class="nm" data-rm="${s.id}|${a.id}|${esc(n)}" aria-label="${esc(n)} weghalen">${esc(n)} ×</button>`; }).join('')}</td>`;
+    }).join('')}</tr>`).join('')}
+  </tbody></table></div>`;
+  const solG={}; Object.entries(RO.sol).forEach(([n,cells])=>cells.forEach(([s,a])=>{ (solG[s+'|'+a] ||= []).push(n); }));
+  return `<div class="opd">${opdHead('3c',6)}<div class="content">
+    <h2>${esc(RO.title)}</h2>
+    <div class="boekje"><p>${esc(RO.text)}</p><h3>Uitvoering</h3><ul>${RO.uitvoering.map(u=>`<li>${esc(u)}</li>`).join('')}</ul><p><b>Tip:</b> ${esc(RO.tip)}</p></div>
+    ${RO.extra||''}
+    ${review?`<div class="total"><b>${tot}</b><span>van 6 punten</span></div>${res.map(s=>secHTML(s.code?'C3c-'+s.code:'C3c',s.title,s.max,s.pts,s.items)).join('')}`:''}
+    <h3>${c.id==='A'?'Vrijwilligers':c.id==='B'?'Cliënten':'Medewerkers'}: voorkeuren en beschikbaarheid</h3>
+    <div class="people">${RO.people.map(p=>{ const k=cnt(G,p.n); const cc=k===p.k?'full':k>p.k?'over':''; return `<button class="pers" data-person="${esc(p.n)}" aria-pressed="${rt.sel===p.n}" ${review?'disabled':''}><b><span>${esc(p.n)}</span>${bb()||review?`<span class="cnt ${cc}">${k} / ${p.k}</span>`:`<span class="cnt">${p.k} ${esc(RO.unit)}</span>`}</b><ul>${p.w.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></button>`; }).join('')}</div>
+    ${!review?`<div class="placebar" aria-live="polite">${rt.sel?`Je plaatst nu: <b>${esc(rt.sel)}</b>. Klik op een vakje in het rooster. Klik op een naam in het rooster om die weg te halen.`:'Klik eerst op een naam.'}</div>`:''}
+    ${grid(G,false)}
+    ${warns.length&&!review?`<ul class="warnlist">${warns.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:''}
+    ${review?`<details class="help"><summary>Bekijk een juist ingevuld rooster</summary><div>${RO.solNote?`<p class="small muted">${esc(RO.solNote)}</p>`:''}${grid(solG,true)}</div></details>
+      <div class="row"><button class="btn ghost" id="ro-retry">Opnieuw maken</button><button class="btn ghost" id="ro-edit">Verbeteren</button>${nextBtn('res','Naar de uitslag')}</div>`
+    :`<div class="row"><button class="btn primary" id="ro-done">Inleveren en nakijken</button><button class="btn ghost" id="ro-clear">Rooster leegmaken</button></div>`}
+  </div></div>`;
+}
+function bindRooster(c){
+  bindGo(); const rt=runtime.ro, RO=c.rooster;
+  const keep=()=>{ const y=window.scrollY; render(); window.scrollTo(0,y); };
+  $$('[data-person]').forEach(b=>b.onclick=()=>{ rt.sel=b.dataset.person; keep(); });
+  const place=(key)=>{ if(!rt.sel) return; const arr=(rt.G[key] ||= []); if(!arr.includes(rt.sel)) arr.push(rt.sel); keep(); };
+  $$('td.cell[data-cell]').forEach(td=>{ td.onclick=(e)=>{ if(e.target.closest('[data-rm]')) return; place(td.dataset.cell); }; td.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); place(td.dataset.cell); } }; });
+  $$('[data-rm]').forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); const [s,a,n]=b.dataset.rm.split('|'); const k=s+'|'+a; rt.G[k]=(rt.G[k]||[]).filter(x=>x!==n); if(!rt.G[k].length) delete rt.G[k]; keep(); });
+  const d=$('#ro-done'); if(d) d.onclick=()=>{ rt.done=true; const res=rScore(c,rt.G); R(c.id).o5={score:res.reduce((a,s)=>a+s.pts,0), secs:res.map(s=>({code:s.code,pts:s.pts,max:s.max})), G:JSON.parse(JSON.stringify(rt.G))}; save(); render(); window.scrollTo(0,0); };
+  const cl=$('#ro-clear'); if(cl) cl.onclick=()=>{ if(cl.dataset.sure){ rt.G={}; keep(); } else { cl.dataset.sure='1'; cl.textContent='Zeker weten? Klik nog een keer'; } };
+  const r=$('#ro-retry'); if(r) r.onclick=()=>{ runtime.ro={G:{},sel:RO.people[0].n,done:false}; delete R(c.id).o5; save(); render(); window.scrollTo(0,0); };
+  const e=$('#ro-edit'); if(e) e.onclick=()=>{ rt.done=false; rt.sel=RO.people[0].n; render(); };
+}
+
+/* =========================================================
+   UITSLAG
+   ========================================================= */
+function resView(c){
+  const r=S.results[c.id]||{};
+  const tot=PARTS.reduce((a,[k])=>a+(r[k]?r[k].score:0),0), doneAll=PARTS.every(([k])=>r[k]);
+  const c3=['o3','o4','o5'].reduce((a,k)=>a+(r[k]?r[k].score:0),0);
+  return `<div class="opd"><div class="marg"><span class="nr">Σ</span></div><div class="content">
+    <h2>Uitslag oefenexamen ${c.id} · ${esc(c.place)}</h2>
+    <p class="muted">${esc(S.name||'Naam nog niet ingevuld')}${S.klas?' · '+esc(S.klas):''} · niveau ${S.level.toUpperCase()}</p>
+    <div class="tablewrap"><table class="restab"><thead><tr><th>Opdracht</th><th></th><th class="r">Score</th><th class="r">Max</th></tr></thead><tbody>
+      ${PARTS.map(([k,code,l])=>`<tr><td>${code}</td><td>${esc(l)}${k==='o5'&&r[k]&&r[k].secs&&r[k].secs.length>1?`<div class="small muted">${r[k].secs.map(s=>'C3c-'+s.code+' '+s.pts+'/'+s.max).join(' · ')}</div>`:''}</td><td class="r">${r[k]?r[k].score:'–'}</td><td class="r">${MAX[k]}</td></tr>`).join('')}
+      <tr><td></td><td class="small muted">subtotaal C3 (Facet)</td><td class="r small muted">${c3}</td><td class="r small muted">18</td></tr>
+    </tbody><tfoot><tr><td colspan="2">Totaal onderdeel C</td><td class="r">${tot}</td><td class="r">25</td></tr></tfoot></table></div>
+    ${!doneAll?'<p class="chip warn" style="align-self:flex-start">Nog niet alle opdrachten gemaakt.</p>':''}
+    <div class="card mailbox">
+      <h3>Uitslag naar je docent sturen</h3>
+      ${!S.name?'<p class="chip warn" style="align-self:flex-start">Vul eerst je naam in op de startpagina.</p>':''}
+      <label for="docent" style="font-weight:700">Naar welke docent?</label>
+      <select id="docent"><option value="">Kies je docent …</option>${DOCENTEN.map((d,i)=>`<option value="${i}" ${S.docent===i?'selected':''}>${esc(d.naam)}</option>`).join('')}</select>
+      <div class="row">
+        <a class="btn primary ${S.docent==null||!S.name?'disabled':''}" id="res-mail" target="_blank" rel="noopener" href="${S.docent!=null&&S.name?esc(mailLink(c)):'#'}" aria-disabled="${S.docent==null||!S.name}">Mail naar docent</a>
+        <button class="btn ghost" id="res-copy">Uitslag kopiëren</button><span class="small muted" id="res-msg"></span>
+      </div>
+      <p class="small muted">Er opent een nieuwe e-mail in Outlook met je uitslag erin. Controleer hem en klik op <b>Verzenden</b>. Werkt de knop niet? Kopieer dan je uitslag en plak die in een mail of in Teams.</p>
+    </div>
+    <textarea id="res-out" hidden readonly></textarea>
+    <p class="note">Dit is een oefenscore: bij het echte cspe beoordeelt de examinator je werk.</p>
+  </div></div>`;
+}
+function resultText(c){
+  const r=S.results[c.id]||{}; const g=k=>r[k]?r[k].score:'-';
+  const tot=PARTS.reduce((a,[k])=>a+(r[k]?r[k].score:0),0);
+  return `Oefenapp Mens & Activiteit – oefenexamen ${c.id} (${c.place})\n${S.name||'-'} ${S.klas||''} · ${S.level.toUpperCase()}\n`+
+    PARTS.map(([k,code,l])=>`${code} ${l}: ${g(k)}/${MAX[k]}`).join('\n')+`\nTotaal: ${tot}/25`;
+}
+function mailLink(c){
+  const d=DOCENTEN[S.docent]; if(!d) return '#';
+  const subject=`Oefenapp M&A – examen ${c.id} – ${S.name||'leerling'}${S.klas?' '+S.klas:''}`;
+  return 'https://outlook.office.com/mail/deeplink/compose?to='+encodeURIComponent(d.mail)+'&subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(resultText(c).replace(/\n/g,'\r\n'));
+}
+function copyText(txt,area,msg){
+  const fallback=()=>{ area.hidden=false; area.value=txt; area.style.minHeight='160px'; area.focus(); area.select(); msg.textContent='Selecteer en kopieer de tekst hieronder.'; };
+  try{ navigator.clipboard.writeText(txt).then(()=>{msg.textContent='Gekopieerd.';},fallback); }catch(e){ fallback(); }
+}
+function bindRes(c){
+  $('#res-copy').onclick=()=>copyText(resultText(c),$('#res-out'),$('#res-msg'));
+  $('#docent').onchange=e=>{ S.docent=e.target.value===''?null:+e.target.value; save(); render(); };
+  $('#res-mail').onclick=e=>{ if(S.docent==null||!S.name){ e.preventDefault(); } };
+}
+
+render();
+
+</script>
+</body></html>
