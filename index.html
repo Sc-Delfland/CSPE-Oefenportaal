@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSPE Oefenportaal Zorg &amp; Welzijn</title>
+<meta name="description" content="Startscherm voor het oefenen van het CSPE Zorg & Welzijn per profielvak.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+:root{
+  --bg:#eef2f4; --paper:#fff; --ink:#17222b; --muted:#5a6a76; --line:#d3dbe1;
+  --zorg:#d6453d; --omg:#1d8a4f; --gez:#2f6fd6; --act:#c27c00;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible","Segoe UI",Verdana,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#11181d;--paper:#18222a;--ink:#e8eef2;--muted:#9db0bd;--line:#33424d;
+    --zorg:#ff7a70;--omg:#5fd08e;--gez:#74a6ff;--act:#f0b440;color-scheme:dark}
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 18px 56px}
+h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.5rem;font-weight:800}
+h3{font-size:1.15rem;font-weight:600}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700}
+.intro{color:var(--muted);margin:.5rem 0 0;max-width:60ch}
+header{margin-bottom:26px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.vak{
+  all:unset;cursor:pointer;display:flex;flex-direction:column;gap:10px;
+  background:var(--paper);border:1px solid var(--line);border-top:8px solid var(--c);
+  border-radius:14px;padding:20px 20px 18px;min-height:190px;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.vak:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.vak:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.vak .icon{width:46px;height:46px;border-radius:12px;background:color-mix(in srgb,var(--c) 15%,transparent);display:grid;place-items:center;color:var(--c)}
+.vak .icon svg{width:26px;height:26px}
+.vak p{margin:0;color:var(--muted);font-size:.95rem}
+.vak .count{margin-top:auto;font-size:.85rem;font-weight:700;color:var(--c)}
+
+.back{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-weight:700;margin-bottom:18px;padding:6px 0}
+.back:hover{color:var(--ink)}
+.back:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
+.vakhead{border-left:8px solid var(--c);padding-left:14px;margin-bottom:22px}
+
+.apps{display:grid;gap:14px}
+.app{
+  display:flex;gap:16px;align-items:center;text-decoration:none;color:inherit;
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+  transition:border-color .12s ease, transform .12s ease;
+}
+a.app:hover{border-color:var(--c);transform:translateX(3px)}
+a.app:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.app .badge{flex:none;width:52px;height:52px;border-radius:12px;background:var(--c);color:#fff;display:grid;place-items:center}
+.app .badge svg{width:28px;height:28px}
+.app .txt{flex:1}
+.app .txt p{margin:.2rem 0 0;color:var(--muted);font-size:.95rem}
+.app .go{flex:none;font-weight:700;color:var(--c);white-space:nowrap}
+.empty{background:var(--paper);border:2px dashed var(--line);border-radius:14px;padding:26px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-family:var(--font-display);font-size:1.1rem;margin-bottom:4px}
+footer{margin-top:36px;color:var(--muted);font-size:.85rem;text-align:center}
+@media (max-width:520px){.app{flex-wrap:wrap}.app .go{width:100%;text-align:right}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- STARTSCHERM -->
+  <section id="home">
+    <header>
+      <div class="eyebrow">vmbo Zorg &amp; Welzijn · bb/kb</div>
+      <h1>CSPE Oefenportaal</h1>
+      <p class="intro">Kies het profielvak dat je wilt oefenen. Per vak vind je oefenexamens en oefenapps voor het CSPE.</p>
+    </header>
+    <div class="grid" id="vakGrid"></div>
+  </section>
+
+  <!-- VAKPAGINA -->
+  <section id="vak" hidden>
+    <button class="back" id="backBtn" type="button">← Terug naar alle profielvakken</button>
+    <div class="vakhead" id="vakHead"></div>
+    <div class="apps" id="appList"></div>
+  </section>
+
+  <footer>Oefenportaal CSPE Zorg &amp; Welzijn · Apps openen in een nieuw venster</footer>
+</div>
+
+<script>
+/* ===== Pas hier de profielvakken en apps aan =====
+   Nieuwe app toevoegen? Zet een regel in de 'apps'-lijst van het juiste vak.
+
+   Links:
+   - Nu verwijzen de apps naar de gedeelde Claude-artifacts (https://claude.ai/artifact/...).
+     Die werken alleen als de app in Claude op "Iedereen met de link" staat.
+   - Zet je een app later zelf op GitHub, vervang de url dan door het pad naar de map,
+     bijvoorbeeld url:'mens-en-zorg/' (dan opent hij mens-en-zorg/index.html in deze repository). */
+const ICONS = {
+  zorg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/><path d="M12 9v5M9.5 11.5h5"/></svg>',
+  omg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
+  gez:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v6a5 5 0 0 0 10 0V3"/><path d="M12 14v2a4 4 0 0 0 8 0v-2"/><circle cx="20" cy="12" r="2"/></svg>',
+  act:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="m9 15 2 2 4-4"/></svg>',
+  exam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="m9 13 2 2 4-4"/></svg>',
+  patient:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/><path d="M12 15v4M10 17h4"/></svg>'
+};
+
+const VAKKEN = [
+  { id:'mens-en-zorg', naam:'Mens & Zorg', kleur:'var(--zorg)', icon:'zorg',
+    omschrijving:'Basiszorg, verpleegtechnische handelingen, transfers en rapporteren.',
+    apps:[
+      { titel:'Virtuele Cliënt', icon:'patient',
+        tekst:'Oefen een CSPE-opdracht met een virtuele cliënt: observeren, handelen en rapporteren.',
+        url:'https://claude.ai/artifact/LAJanDas5tr7UCUyyVEa1M' }
+    ]},
+  { id:'mens-en-omgeving', naam:'Mens & Omgeving', kleur:'var(--omg)', icon:'omg',
+    omschrijving:'Huishoudelijke zorg, schoonmaken, wassen en een veilige woonomgeving.',
+    apps:[
+      { titel:'Oefenapp Mens & Omgeving', icon:'exam',
+        tekst:'Drie oefenexamens: Facet-vragen, Word/PowerPoint-opdracht, gesprek en wassen, strijken of schoonmaken.',
+        url:'https://claude.ai/artifact/5UY31kkEmw2NrkioPvk2uV' }
+    ]},
+  { id:'mens-en-gezondheid', naam:'Mens & Gezondheid', kleur:'var(--gez)', icon:'gez',
+    omschrijving:'Voeding, hygiëne, EHBO en een gezonde leefstijl.',
+    apps:[
+      { titel:'Oefenapp Mens & Gezondheid', icon:'exam',
+        tekst:'Oefen de CSPE-opdrachten van Mens & Gezondheid.',
+        url:'https://claude.ai/artifact/W5zfnJ7rerhE9XHmFAaMXW' }
+    ]},
+  { id:'mens-en-activiteit', naam:'Mens & Activiteit', kleur:'var(--act)', icon:'act',
+    omschrijving:'Activiteiten plannen, organiseren, begeleiden en evalueren.',
+    apps:[
+      { titel:'Oefenapp Mens & Activiteit', icon:'act',
+        tekst:'Oefen de CSPE-opdrachten van Mens & Activiteit, zoals in het opdrachtenboekje.',
+        url:'https://claude.ai/artifact/K5CxgtV9cHCZYe96AB5HwT' }
+    ]}
+];
+
+/* ===== Weergave ===== */
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+$('vakGrid').innerHTML = VAKKEN.map(v => `
+  <button class="vak" style="--c:${v.kleur}" data-id="${v.id}" type="button">
+    <span class="icon">${ICONS[v.icon]}</span>
+    <h3>${esc(v.naam)}</h3>
+    <p>${esc(v.omschrijving)}</p>
+    <span class="count">${v.apps.length ? v.apps.length + (v.apps.length===1?' oefening':' oefeningen') : 'Binnenkort'} →</span>
+  </button>`).join('');
+
+$('vakGrid').addEventListener('click', e => {
+  const b = e.target.closest('.vak'); if (b) location.hash = b.dataset.id;
+});
+$('backBtn').addEventListener('click', () => { history.replaceState(null,'',location.pathname); render(); });
+
+function render(){
+  const id = location.hash.slice(1);
+  const v = VAKKEN.find(x => x.id === id);
+  $('home').hidden = !!v; $('vak').hidden = !v;
+  if (!v) { document.title = 'CSPE Oefenportaal Zorg & Welzijn'; return; }
+  document.title = v.naam + ' · CSPE Oefenportaal';
+  $('vak').style.setProperty('--c', v.kleur);
+  $('vakHead').innerHTML = `<div class="eyebrow">Profielvak</div><h2>${esc(v.naam)}</h2><p class="intro" style="margin-top:.3rem">${esc(v.omschrijving)}</p>`;
+  $('appList').innerHTML = v.apps.length
+    ? v.apps.map(a => `
+      <a class="app" href="${a.url}" target="_blank" rel="noopener">
+        <span class="badge">${ICONS[a.icon]}</span>
+        <span class="txt"><h3>${esc(a.titel)}</h3><p>${esc(a.tekst)}</p></span>
+        <span class="go">Start ↗</span>
+      </a>`).join('')
+    : `<div class="empty"><strong>Nog geen oefeningen</strong>Voor ${esc(v.naam)} komen hier binnenkort oefenapps.</div>`;
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', render);
+render();
+</script>
+</body>
+</html>
